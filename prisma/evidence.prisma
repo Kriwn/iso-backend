@@ -1,0 +1,11 @@
+model evidence {
+	id				Int				@id @default(autoincrement()) @db.Integer
+	fileName		String			@db.VarChar(255)
+	filePath		String			@db.Text
+
+	controlId		Int				@db.Integer
+	control			controls		@relation(fields: [controlId], references: [id], onDelete: Cascade)
+
+	createdAt		DateTime		@default(now())
+	updatedAt		DateTime		@updatedAt
+}

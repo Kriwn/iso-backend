@@ -1,0 +1,21 @@
+model isoAssessment {
+	id			Int		@id @default(autoincrement()) @db.Integer
+	name		String	@db.VarChar(255)
+	year		Int		@db.Integer
+	status		iso_status	@default(DRAFT)
+
+	companyId	Int		@db.Integer
+	company		company	@relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+	assessmentControls	assessmentControl[]
+
+	createdAt	DateTime @default(now())
+	updatedAt	DateTime @updatedAt
+}
+
+
+enum iso_status {
+	DRAFT
+	IN_PROGRESS
+	COMPLETED
+}

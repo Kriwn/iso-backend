@@ -1,0 +1,21 @@
+model controls {
+	id					Int						@id @default(autoincrement()) @db.Integer
+	code				String					@db.VarChar(20)
+	name				String					@db.VarChar(255)
+	currentPractice		String					@db.Text
+	description			String					@db.Text
+	status				control_status			@default(NOT_IMPLEMENTED)
+	assessmentControlId	Int						@db.Integer
+	assessmentControl	assessmentControl		@relation(fields: [assessmentControlId], references: [id], onDelete: Cascade)
+	evidences			evidence[]
+
+	createdAt			DateTime				@default(now())
+	updatedAt			DateTime				@updatedAt
+}
+
+
+enum control_status {
+	NOT_IMPLEMENTED
+	PARTIALLY_IMPLEMENTED
+	IMPLEMENTED
+}
