@@ -14,30 +14,30 @@ datasource db {
 }
 
 model Evidence {
-	id				  Int				@id @default(autoincrement()) @db.Integer
-	fileName		String			@db.VarChar(255)
-	filePath		String			@db.Text
+  id       Int    @id @default(autoincrement()) @db.Integer
+  fileName String @db.VarChar(255)
+  filePath String @db.Text
 
-	controlId		Int				@db.Integer
-	control			Controls		@relation(fields: [controlId], references: [id], onDelete: Cascade)
+  controlId Int      @db.Integer
+  control   Controls @relation(fields: [controlId], references: [id], onDelete: Cascade)
 
-	createdAt		DateTime		@default(now())
-	updatedAt		DateTime		@updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Controls {
-	id					Int						@id @default(autoincrement()) @db.Integer
-	code				String					@db.VarChar(20)
-	name				String					@db.VarChar(255)
-	currentPractice		String					@db.Text
-	description			String					@db.Text
-	status				control_status			@default(NOT_IMPLEMENTED)
-	assessmentControlId	Int						@db.Integer
-	assessmentControl	AssessmentControl		@relation(fields: [assessmentControlId], references: [id], onDelete: Cascade)
-	evidences			Evidence[]
+  id                  Int               @id @default(autoincrement()) @db.Integer
+  code                String            @db.VarChar(20)
+  name                String            @db.VarChar(255)
+  currentPractice     String            @db.Text
+  description         String            @db.Text
+  status              control_status    @default(NOT_IMPLEMENTED)
+  assessmentControlId Int               @db.Integer
+  assessmentControl   AssessmentControl @relation(fields: [assessmentControlId], references: [id], onDelete: Cascade)
+  evidences           Evidence[]
 
-	createdAt			DateTime				@default(now())
-	updatedAt			DateTime				@updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum controls_type {
@@ -47,80 +47,78 @@ enum controls_type {
   TECHNOLOGICAL
 }
 
-
 model AssessmentControl {
-	id				Int				@id @default(autoincrement()) @db.Integer
-	count 			Int				@db.Integer
-	maxCount		Int				@db.Integer
-	context			String			@db.VarChar(255)
-	type			controls_type	@default(ORGANIZATION)
+  id       Int           @id @default(autoincrement()) @db.Integer
+  count    Int           @db.Integer
+  maxCount Int           @db.Integer
+  context  String        @db.VarChar(255)
+  type     controls_type @default(ORGANIZATION)
 
-	isoAssessmentId	Int				@db.Integer
-	isoAssessment	IsoAssessment	@relation(fields: [isoAssessmentId], references: [id], onDelete: Cascade)
-	controls 	    Controls[]
+  isoAssessmentId Int           @db.Integer
+  isoAssessment   IsoAssessment @relation(fields: [isoAssessmentId], references: [id], onDelete: Cascade)
+  controls        Controls[]
 
-	createdAt		DateTime		@default(now())
-	updatedAt		DateTime		@updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum control_status {
-	NOT_IMPLEMENTED
-	PARTIALLY_IMPLEMENTED
-	IMPLEMENTED
+  NOT_IMPLEMENTED
+  PARTIALLY_IMPLEMENTED
+  IMPLEMENTED
 }
 
 model IsoAssessment {
-	id			Int		@id @default(autoincrement()) @db.Integer
-	name		String	@db.VarChar(255)
-	year		Int		@db.Integer
-	status		iso_status	@default(DRAFT)
+  id     Int        @id @default(autoincrement()) @db.Integer
+  name   String     @db.VarChar(255)
+  year   Int        @db.Integer
+  status iso_status @default(DRAFT)
 
-	companyId	Int		@db.Integer
-	company		Company	@relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId Int     @db.Integer
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
-	assessmentControls	AssessmentControl[]
+  assessmentControls AssessmentControl[]
 
-	createdAt	DateTime @default(now())
-	updatedAt	DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
-
 
 enum iso_status {
-	DRAFT
-	IN_PROGRESS
-	COMPLETED
+  DRAFT
+  IN_PROGRESS
+  COMPLETED
 }
-
 
 model Company {
-	id			Int			@id @default(autoincrement()) @db.Integer
-	name		String		@db.VarChar(100)
-	details		String?		@db.Text
-	createdAt	DateTime	@default(now())
-	updatedAt	DateTime	@updatedAt
-	users		User[]
-	isoAssessments	IsoAssessment[]
+  id             Int             @id @default(autoincrement()) @db.Integer
+  code           String          @unique @db.VarChar(20) // business identifier
+  name           String          @db.VarChar(100)
+  details        String?         @db.VarChar(255)
+  image          String?         @db.Text
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  users          User[]
+  isoAssessments IsoAssessment[]
 }
 
-
 model User {
-	id 				  String 		@id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-	firstName		String	@db.VarChar(50)
-	lastName		String	@db.VarChar(50)
-	email			String	@db.VarChar(50)
-	role			userRole	@default(INTERNAL_EXPERT)
-	emailVerified	Boolean	@default(false)
-	image			String?
-	createdAt		DateTime	@default(now())
-	updatedAt		DateTime	@updatedAt
-	sessions		Session[]
-	accounts		Account[]
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  firstName     String    @db.VarChar(50)
+  lastName      String    @db.VarChar(50)
+  email         String    @db.VarChar(50)
+  role          userRole  @default(INTERNAL_EXPERT)
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
 
-	company_id		Int?		@db.Integer
-	company			Company?	@relation(fields: [company_id], references: [id], onDelete: SetNull)
+  company_id Int?     @db.Integer
+  company    Company? @relation(fields: [company_id], references: [id], onDelete: SetNull)
 
-	@@unique([email])
-	@@map("user")
+  @@unique([email])
+  @@map("user")
 }
 
 enum userRole {
@@ -128,7 +126,6 @@ enum userRole {
   EXTERNAL_EXPERT
   ADMIN
 }
-
 
 model Session {
   id        String   @id

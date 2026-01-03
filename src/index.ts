@@ -9,7 +9,7 @@ import { getPrismaClient } from "./infrastructures/db/prisma/client";
 import { RedisService } from "./infrastructures/db/redis/redisService";
 import { z } from "zod";
 import { getAuth } from "./utils/auth";
-import { PrismaUserRepository } from "./infrastructures/db/prisma/repositories/prismaUserRepositoty";
+import { PrismaUserRepository } from "./infrastructures/db/prisma/repositories/prismaUserRepository";
 import { UserService } from "./services/user/userService";
 import swagger from "@elysiajs/swagger";
 import { userController } from "./interfaces/userController";

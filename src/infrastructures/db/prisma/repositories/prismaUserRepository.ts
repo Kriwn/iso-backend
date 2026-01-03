@@ -20,7 +20,6 @@ export class PrismaUserRepository implements UserRepository {
 		}
 	}
 
-	//TODO fix uodate
 	async UpdateUser(id: string,data: UpdateUserDto): Promise<UserEntity> {
 		try {
 			const res = await this.prisma.user.update({
