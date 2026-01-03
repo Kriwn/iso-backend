@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import { UserService } from "../services/user/userService";
 import { UserAlreadyExistsError, UserNotFoundError } from "../errors/useError";
-import { CreateUserDto, UpdateUserDto } from "../services/user/userdto";
+import { CreateUserDto, UpdateUserDto } from "../services/user/userDto";
 
 export const userController = (userService: UserService) =>
 	new Elysia({ prefix: "/api/users", tags: ["User"] })

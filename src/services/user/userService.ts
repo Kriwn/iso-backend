@@ -1,5 +1,5 @@
 import { UserRepository } from "../../repositories/userRepository";
-import { CreateUserDto, UpdateUserDto } from "./userdto";
+import { CreateUserDto, UpdateUserDto } from "./userDto";
 
 
 // TODO Implement business logic, validation, etc.
@@ -7,22 +7,22 @@ export class UserService {
 	constructor(private userRepository: UserRepository) {}
 
 	async registerUser(data: CreateUserDto) {
-		return this.userRepository.CreateUser(data);
+		return this.userRepository.createUser(data);
 	}
 
 	async updateUser(id: string, data: UpdateUserDto) {
-		return this.userRepository.UpdateUser(id, data);
+		return this.userRepository.updateUser(id, data);
 	}
 
 	async getUserById(id: string) {
-		return this.userRepository.GetUserById(id);
+		return this.userRepository.getUserById(id);
 	}
 
 	async getAllUsers() {
-		return this.userRepository.GetAllUsers();
+		return this.userRepository.getAllUsers();
 	}
 
 	async deleteUser(id: string) {
-		return this.userRepository.DeleteUser(id);
+		return this.userRepository.deleteUser(id);
 	}
 }

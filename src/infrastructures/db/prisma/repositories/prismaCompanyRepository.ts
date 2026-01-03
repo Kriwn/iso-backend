@@ -2,7 +2,7 @@ import { Prisma, PrismaClient } from "../../../../../generated/prisma/client";
 import { CompanyEntity, toCompanyEntity } from "../../../../entities/companyEntity";
 import { CompanyCodeAlreadyExistsError, CompanyCodeNotFoundError, CompanyNotFoundError } from "../../../../errors/companyError";
 import { CompanyRepository } from "../../../../repositories/companyRepository";
-import { CreateCompanyDto, UpdateCompanyDto, UpdatePrivateCompanyDto } from "../../../../services/company/companydto";
+import { CreateCompanyDto, UpdateCompanyDto, UpdatePrivateCompanyDto } from "../../../../services/company/companyDto";
 
 export class PrismaCompanyRepository implements CompanyRepository {
 

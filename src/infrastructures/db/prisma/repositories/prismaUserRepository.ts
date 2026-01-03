@@ -2,13 +2,13 @@ import { Prisma, PrismaClient } from "../../../../../generated/prisma/client";
 import { toUserEntity, UserEntity } from "../../../../entities/userEntity";
 import { UserAlreadyExistsError, UserNotFoundError } from "../../../../errors/useError";
 import { UserRepository } from "../../../../repositories/userRepository";
-import { CreateUserDto, UpdateUserDto } from "../../../../services/user/userdto";
+import { CreateUserDto, UpdateUserDto } from "../../../../services/user/userDto";
 
 export class PrismaUserRepository implements UserRepository {
 
 	constructor(private prisma: PrismaClient) {}
 
-	async CreateUser(data: CreateUserDto): Promise<UserEntity> {
+	async createUser(data: CreateUserDto): Promise<UserEntity> {
 		try {
 			const res = await this.prisma.user.create({ data });
 			return toUserEntity(res);
@@ -20,7 +20,7 @@ export class PrismaUserRepository implements UserRepository {
 		}
 	}
 
-	async UpdateUser(id: string,data: UpdateUserDto): Promise<UserEntity> {
+	async updateUser(id: string,data: UpdateUserDto): Promise<UserEntity> {
 		try {
 			const res = await this.prisma.user.update({
 				where: { id },
@@ -38,7 +38,7 @@ export class PrismaUserRepository implements UserRepository {
 		}
 	}
 
-	async GetUserById(id: string): Promise<UserEntity | null> {
+	async getUserById(id: string): Promise<UserEntity | null> {
 		const res = await this.prisma.user.findUnique({
 			where: { id },
 		});
@@ -48,12 +48,12 @@ export class PrismaUserRepository implements UserRepository {
 		return toUserEntity(res);
 	}
 
-	async GetAllUsers(): Promise<UserEntity[]> {
+	async getAllUsers(): Promise<UserEntity[]> {
 		const res = await this.prisma.user.findMany();
 		return res.map(toUserEntity);
 	}
 
-	async DeleteUser(id: string): Promise<UserEntity> {
+	async deleteUser(id: string): Promise<UserEntity> {
 		try {
 			const res = await this.prisma.user.delete({
 				where: { id },

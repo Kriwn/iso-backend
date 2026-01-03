@@ -1,5 +1,5 @@
 import { CompanyRepository } from "../../repositories/companyRepository";
-import { CreateCompanyDto, UpdateCompanyDto, UpdatePrivateCompanyDto } from "./companydto";
+import { CreateCompanyDto, UpdateCompanyDto, UpdatePrivateCompanyDto } from "./companyDto";
 
 export class CompanyService {
 	constructor(private companyRepository: CompanyRepository) {}

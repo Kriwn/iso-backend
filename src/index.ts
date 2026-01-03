@@ -13,6 +13,12 @@ import { PrismaUserRepository } from "./infrastructures/db/prisma/repositories/p
 import { UserService } from "./services/user/userService";
 import swagger from "@elysiajs/swagger";
 import { userController } from "./interfaces/userController";
+import { PrismaCompanyRepository } from "./infrastructures/db/prisma/repositories/prismaCompanyRepository";
+import { CompanyService } from "./services/company/companyService";
+import { CompanyController } from "./interfaces/companyController";
+import { PrismaIsoAssessmentRepository } from "./infrastructures/db/prisma/repositories/prismaIsoAssessmentRepository";
+import { IsoAssessmentService } from "./services/isoAssessment/isoAssessmentService";
+import { IsoAssessmentController } from "./interfaces/isoAssessmentController";
 
 const app = new Elysia({
   // normalize: false,
@@ -26,11 +32,6 @@ const redis = CreateRedisClient(env);
 let rabbitmqService: RabbitmqService | null = null;
 const { connection, channel } = await connectRabbit(env);
 const prisma = getPrismaClient();
-const userRepo = new PrismaUserRepository(prisma);
-const userService = new UserService(userRepo);
-
-app.use(swagger({ path: "/docs" }))
-  .use(userController(userService))
 
 
 if (!connection || !channel) {
@@ -51,6 +52,20 @@ if (!connection || !channel) {
 
 const redisService = new RedisService(redis);
 
+
+
+
+const userRepo = new PrismaUserRepository(prisma);
+const userService = new UserService(userRepo);
+const companyRepo = new PrismaCompanyRepository(prisma);
+const companyService = new CompanyService(companyRepo);
+const isoAssessmentRepo = new PrismaIsoAssessmentRepository(prisma);
+const isoAssessmentService = new IsoAssessmentService(isoAssessmentRepo);
+
+app.use(swagger({ path: "/docs" }))
+  .use(userController(userService))
+  .use(CompanyController(companyService))
+  .use(IsoAssessmentController(isoAssessmentService));
 
 
 // Cors

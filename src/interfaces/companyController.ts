@@ -1,7 +1,7 @@
 import Elysia, { t } from "elysia";
 import { CompanyService } from "../services/company/companyService";
 import { CompanyCodeAlreadyExistsError, CompanyNotFoundError } from "../errors/companyError";
-import { CreateCompanyDto, UpdateCompanyDto, UpdatePrivateCompanyDto } from "../services/company/companydto";
+import { CreateCompanyDto, UpdateCompanyDto, UpdatePrivateCompanyDto } from "../services/company/companyDto";
 
 export const CompanyController= (companyService: CompanyService) =>
 	new Elysia({ prefix: "/api/companies", tags: ["Company"] })
