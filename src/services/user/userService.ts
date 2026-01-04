@@ -7,22 +7,22 @@ export class UserService {
 	constructor(private userRepository: UserRepository) {}
 
 	async registerUser(data: CreateUserDto) {
-		return this.userRepository.createUser(data);
+		return this.userRepository.create(data);
 	}
 
 	async updateUser(id: string, data: UpdateUserDto) {
-		return this.userRepository.updateUser(id, data);
+		return this.userRepository.update(id, data);
 	}
 
 	async getUserById(id: string) {
-		return this.userRepository.getUserById(id);
+		return this.userRepository.getById(id);
 	}
 
 	async getAllUsers() {
-		return this.userRepository.getAllUsers();
+		return this.userRepository.getAll();
 	}
 
 	async deleteUser(id: string) {
-		return this.userRepository.deleteUser(id);
+		return this.userRepository.delete(id);
 	}
 }

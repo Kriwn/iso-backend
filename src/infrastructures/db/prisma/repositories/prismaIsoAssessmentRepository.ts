@@ -8,7 +8,6 @@ export class PrismaIsoAssessmentRepository implements IsoAssessmentRepository {
 
 	constructor(private prisma: PrismaClient) {}
 
-	// TODO fix this one
 	async create(data: CreateIsoAssessmentDto): Promise<IsoAssessmentEntity> {
 		try {
 			const res = await this.prisma.isoAssessment.create({ data })

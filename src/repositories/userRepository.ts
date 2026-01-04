@@ -3,12 +3,12 @@ import { CreateUserDto, UpdateUserDto } from "../services/user/userDto";
 
 
 export interface UserRepository {
-	createUser(data: CreateUserDto): Promise<UserEntity>;
+	create(data: CreateUserDto): Promise<UserEntity>;
 
-	getUserById(id: string): Promise<UserEntity | null>;
-	getAllUsers(): Promise<UserEntity[]>;
+	getById(id: string): Promise<UserEntity | null>;
+	getAll(): Promise<UserEntity[]>;
 
-	updateUser(id: string,data: UpdateUserDto): Promise<UserEntity>;
-	
-	deleteUser(id: string): Promise<UserEntity>;
+	update(id: string,data: UpdateUserDto): Promise<UserEntity>;
+
+	delete(id: string): Promise<UserEntity>;
 }
