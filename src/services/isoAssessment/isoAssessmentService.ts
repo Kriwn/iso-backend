@@ -1,7 +1,8 @@
+import { IsoAssessmentRepository } from "../../repositories/isoAssessmentRepository";
 import { CreateIsoAssessmentDto } from "./isoAssessmentDto";
 
 export class IsoAssessmentService {
-	constructor(private isoAssessmentRepository: any) {}
+	constructor(private isoAssessmentRepository: IsoAssessmentRepository) {}
 
 	async createIso(data: CreateIsoAssessmentDto) {
 		return this.isoAssessmentRepository.create(data);
