@@ -1,3 +1,5 @@
+import { IsoStatus } from "../../entities/isoAssessmentEntity";
+
 export interface CreateIsoAssessmentDto {
 	name: string;
 	year: number;
@@ -7,7 +9,7 @@ export interface CreateIsoAssessmentDto {
 export interface UpdateIsoAssessmentDto {
 	name?: string;
 	year?: number;
-	status?: "DRAFT" | "IN_PROGRESS" | "COMPLETED";
+	status?: IsoStatus;
 }
 
 
@@ -15,5 +17,5 @@ export interface UpdatePrivateIsoAssessmentDto {
 	name?: string;
 	year?: number;
 	companyId?: number;
-	status?: "DRAFT" | "IN_PROGRESS" | "COMPLETED";
+	status?: IsoStatus;
 }
