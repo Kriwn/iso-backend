@@ -64,7 +64,7 @@ model AssessmentControl {
 
 enum control_status {
   NOT_IMPLEMENTED
-  PARTIALLY_IMPLEMENTED
+  PARTIALLY
   IMPLEMENTED
 }
 
