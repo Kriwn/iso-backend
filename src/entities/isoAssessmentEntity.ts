@@ -1,3 +1,5 @@
+import { IsoAssessment } from "../../generated/prisma/client";
+
 export type IsoStatus = "DRAFT" | "IN_PROGRESS" | "COMPLETED";
 
 
@@ -11,7 +13,7 @@ export interface IsoAssessmentEntity {
 	updatedAt: Date;
 }
 
-export function toIsoAssessmentEntity(isoAssessment: any): IsoAssessmentEntity {
+export function toIsoAssessmentEntity(isoAssessment: IsoAssessment): IsoAssessmentEntity {
 	return {
 		id: isoAssessment.id,
 		name: isoAssessment.name,
@@ -22,4 +24,3 @@ export function toIsoAssessmentEntity(isoAssessment: any): IsoAssessmentEntity {
 		updatedAt: isoAssessment.updatedAt,
 	};
 }
-	
