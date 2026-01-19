@@ -8,7 +8,7 @@ export class PrismaUserRepository implements UserRepository {
 
 	constructor(private prisma: PrismaClient) {}
 
-	async createUser(data: CreateUserDto): Promise<UserEntity> {
+	async create(data: CreateUserDto): Promise<UserEntity> {
 		try {
 			const res = await this.prisma.user.create({ data });
 			return toUserEntity(res);
@@ -20,7 +20,7 @@ export class PrismaUserRepository implements UserRepository {
 		}
 	}
 
-	async updateUser(id: string,data: UpdateUserDto): Promise<UserEntity> {
+	async update(id: string,data: UpdateUserDto): Promise<UserEntity> {
 		try {
 			const res = await this.prisma.user.update({
 				where: { id },
@@ -38,7 +38,7 @@ export class PrismaUserRepository implements UserRepository {
 		}
 	}
 
-	async getUserById(id: string): Promise<UserEntity | null> {
+	async getById(id: string): Promise<UserEntity | null> {
 		const res = await this.prisma.user.findUnique({
 			where: { id },
 		});
@@ -48,12 +48,12 @@ export class PrismaUserRepository implements UserRepository {
 		return toUserEntity(res);
 	}
 
-	async getAllUsers(): Promise<UserEntity[]> {
+	async getAll(): Promise<UserEntity[]> {
 		const res = await this.prisma.user.findMany();
 		return res.map(toUserEntity);
 	}
 
-	async deleteUser(id: string): Promise<UserEntity> {
+	async delete(id: string): Promise<UserEntity> {
 		try {
 			const res = await this.prisma.user.delete({
 				where: { id },

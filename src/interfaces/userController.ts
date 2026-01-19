@@ -121,8 +121,8 @@ export const userController = (userService: UserService) =>
 			"/:id",
 			async ({ params, set }) => {
 				try {
-					await userService.deleteUser(params.id);
-					set.status = 204;
+					set.status = 200;
+					return await userService.deleteUser(params.id);
 				} catch (err) {
 					if (err instanceof UserNotFoundError) {
 						set.status = 404;

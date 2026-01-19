@@ -170,8 +170,8 @@ export const CompanyController= (companyService: CompanyService) =>
 			"/:id",
 			async ({ params, set }) => {
 				try {
-					await companyService.deleteCompany(params.id);
-					set.status = 204;
+					set.status = 200;
+					return await companyService.deleteCompany(params.id);
 				} catch (err) {
 					if (err instanceof CompanyNotFoundError) {
 						set.status = 404;

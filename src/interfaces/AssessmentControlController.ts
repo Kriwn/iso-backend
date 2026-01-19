@@ -114,9 +114,8 @@ export const AssessmentControl= (assessmentControlService: AssessmentControlServ
 			"/:id",
 			async ({ params, set }) => {
 				try {
-					await assessmentControlService.deleteAssessmentControl(params.id);
-					set.status = 204;
-					return;
+					set.status = 200;
+					return await assessmentControlService.deleteAssessmentControl(params.id);
 				} catch (err) {
 					if (err instanceof AssessmentControlNotFoundError) {
 						set.status = 404;
