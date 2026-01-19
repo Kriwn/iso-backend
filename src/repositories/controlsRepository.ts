@@ -1,5 +1,5 @@
 import { ControlEntity } from "../entities/ControlsEntity";
-import { CreateControlDto, UpdateControlDto } from "../services/Controls/ControlsDto";
+import { CreateControlDto, UpdateControlDto } from "../services/Controls/controlsDto";
 
 export interface ControlsRepository {
 	create(data: CreateControlDto): Promise<ControlEntity>;

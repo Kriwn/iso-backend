@@ -15,7 +15,7 @@ datasource db {
 
 model Evidence {
   id       Int    @id @default(autoincrement()) @db.Integer
-  fileName String @db.VarChar(255)
+  fileName String @db.VarChar(255) @unique
   filePath String @db.Text
 
   controlId Int      @db.Integer

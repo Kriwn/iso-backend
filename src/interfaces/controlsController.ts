@@ -1,8 +1,9 @@
 import Elysia, { t } from "elysia";
-import { CreateControlDto, UpdateControlDto } from "../services/Controls/ControlsDto";
+import { CreateControlDto, UpdateControlDto } from "../services/Controls/controlsDto";
 import { ControlsService } from "../services/Controls/ControlsService";
 import { ControlNotFoundError } from "../errors/ControlsError";
 
+// TODO fix status error
 export const ControlsController = (ControlsService: ControlsService) =>
 	new Elysia({ prefix: "/api/controls", tags: ["Controls"] })
 		.post(
