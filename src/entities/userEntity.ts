@@ -1,13 +1,12 @@
-import { User } from "../../generated/prisma/client";
+import { User, userRole } from "../../generated/prisma/client";
 
-export type Role = "ADMIN" | "INTERNAL_EXPERT" | "EXTERNAL_EXPERT";
 
 export interface UserEntity {
 	id: string;
 	email: string;
 	firstName: string;
 	lastName: string;
-	role: Role;
+	role: userRole;
 	image?: string | null;
 	createdAt: Date;
 	updatedAt: Date;
@@ -15,7 +14,7 @@ export interface UserEntity {
 
 export interface UserPrivateInfo {
   id: string;
-  role: Role;
+  role: userRole;
   isEmailVerified: boolean;
 }
 

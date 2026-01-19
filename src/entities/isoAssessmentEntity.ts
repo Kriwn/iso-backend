@@ -1,13 +1,12 @@
-import { IsoAssessment } from "../../generated/prisma/client";
+import { iso_status, IsoAssessment } from "../../generated/prisma/client";
 
-export type IsoStatus = "DRAFT" | "IN_PROGRESS" | "COMPLETED";
 
 
 export interface IsoAssessmentEntity {
 	id: number;
 	name: string;
 	year: number;
-	status: IsoStatus;
+	status: iso_status;
 	companyId: number;
 	createdAt: Date;
 	updatedAt: Date;

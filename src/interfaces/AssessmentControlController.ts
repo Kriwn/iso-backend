@@ -3,7 +3,7 @@ import { AssessmentControlService } from "../services/AssessmentControl/Assessme
 import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "../services/AssessmentControl/AssessmentControlDto";
 import { AssessmentControlNotFoundError } from "../errors/AssessmentControlError";
 
-export const AssessmentControl= (assessmentControlService: AssessmentControlService) =>
+export const AssessmentControlController= (assessmentControlService: AssessmentControlService) =>
 	new Elysia({ prefix: "/api/assessments", tags: ["Assessment"] })
 		.post(
 			"/",

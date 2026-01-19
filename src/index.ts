@@ -19,6 +19,13 @@ import { CompanyController } from "./interfaces/companyController";
 import { PrismaIsoAssessmentRepository } from "./infrastructures/db/prisma/repositories/prismaIsoAssessmentRepository";
 import { IsoAssessmentService } from "./services/isoAssessment/isoAssessmentService";
 import { IsoAssessmentController } from "./interfaces/isoAssessmentController";
+import { AssessmentControlService } from "./services/AssessmentControl/AssessmentControlService";
+import { Prisma } from "../generated/prisma/browser";
+import { PrismaIsoAssessmentControlRepository } from "./infrastructures/db/prisma/repositories/prismaAssessmentControlRepository";
+import { AssessmentControlController } from "./interfaces/AssessmentControlController";
+import { PrismaControlsRepository } from "./infrastructures/db/prisma/repositories/prismaControlsRepository";
+import { ControlsService } from "./services/Controls/ControlsService";
+import { ControlsController } from "./interfaces/ControlsController";
 
 const app = new Elysia({
   // normalize: false,
@@ -61,11 +68,17 @@ const companyRepo = new PrismaCompanyRepository(prisma);
 const companyService = new CompanyService(companyRepo);
 const isoAssessmentRepo = new PrismaIsoAssessmentRepository(prisma);
 const isoAssessmentService = new IsoAssessmentService(isoAssessmentRepo);
+const assessmentControlRepo = new PrismaIsoAssessmentControlRepository(prisma);
+const assessmentControlService = new AssessmentControlService(assessmentControlRepo);
+const controlRepo = new PrismaControlsRepository(prisma);
+const controlService = new ControlsService(controlRepo);
 
 app.use(swagger({ path: "/docs" }))
   .use(userController(userService))
   .use(CompanyController(companyService))
-  .use(IsoAssessmentController(isoAssessmentService));
+  .use(IsoAssessmentController(isoAssessmentService))
+  .use(AssessmentControlController(assessmentControlService))
+  .use(ControlsController(controlService));
 
 
 // Cors

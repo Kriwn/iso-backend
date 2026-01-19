@@ -1,6 +1,5 @@
-import { AssessmentControl } from "../../generated/prisma/client";
+import { AssessmentControl, controls_type } from "../../generated/prisma/client";
 
-export type AssessmentControlType = "PHYSICAL" | "PEOPLE" | "ORGANIZATION" | "TECHNOLOGICAL";
 
 export interface AssessmentControlEntity {
 	id: number;
@@ -8,7 +7,7 @@ export interface AssessmentControlEntity {
 	count: number;
 	maxCount: number;
 	context: string;
-	type: AssessmentControlType;
+	type: controls_type;
 	createdAt: Date;
 	updatedAt: Date;
 }

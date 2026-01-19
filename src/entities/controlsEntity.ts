@@ -1,9 +1,9 @@
-import { Controls } from "../../generated/prisma/client";
+import { control_status, Controls } from "../../generated/prisma/client";
 
-export type ControlStatus =  "NOT_IMPLEMENTED" | "PARTIALLY" | "IMPLEMENTED";
+// export enum ControlStatus =  "NOT_IMPLEMENTED" | "PARTIALLY" | "IMPLEMENTED";
 
 //TODO change type to enum
-// export enum ControlStatusEnum {
+// export enum ControlStatus {
 // 	NOT_IMPLEMENTED = "NOT_IMPLEMENTED",
 // 	PARTIALLY = "PARTIALLY",
 // 	IMPLEMENTED = "IMPLEMENTED",
@@ -16,7 +16,7 @@ export interface ControlEntity {
 	currentPractice: string;
 	description: string;
 	assessmentControlId: number;
-	status:	 ControlStatus;
+	status:	 control_status;
 	updatedAt: Date;
 	createdAt: Date;
 }

@@ -1,4 +1,4 @@
-import { IsoStatus } from "../../entities/isoAssessmentEntity";
+import { iso_status } from "../../../generated/prisma/enums";
 
 export interface CreateIsoAssessmentDto {
 	name: string;
@@ -9,7 +9,7 @@ export interface CreateIsoAssessmentDto {
 export interface UpdateIsoAssessmentDto {
 	name?: string;
 	year?: number;
-	status?: IsoStatus;
+	status?: iso_status;
 }
 
 
@@ -17,5 +17,5 @@ export interface UpdatePrivateIsoAssessmentDto {
 	name?: string;
 	year?: number;
 	companyId?: number;
-	status?: IsoStatus;
+	status?: iso_status;
 }
