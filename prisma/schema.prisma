@@ -13,6 +13,16 @@ datasource db {
   provider = "postgresql"
 }
 
+model Suggestion {
+  id        Int      @id @default(autoincrement()) @db.Integer
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  controlId Int      @db.Integer @unique
+  control   Controls @relation(fields: [controlId], references: [id], onDelete: Cascade)
+}
+
 model Evidence {
   id       Int    @id @default(autoincrement()) @db.Integer
   fileName String @db.VarChar(255) @unique
@@ -35,6 +45,7 @@ model Controls {
   assessmentControlId Int               @db.Integer
   assessmentControl   AssessmentControl @relation(fields: [assessmentControlId], references: [id], onDelete: Cascade)
   evidences           Evidence[]
+  suggestions        Suggestion?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
