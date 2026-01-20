@@ -1,6 +1,6 @@
 import Elysia, { t } from "elysia";
 import { CreateControlDto, UpdateControlDto } from "../services/Controls/controlsDto";
-import { ControlsService } from "../services/Controls/ControlsService";
+import { ControlsService } from "../services/Controls/controlsService";
 import { ControlNotFoundError } from "../errors/ControlsError";
 
 // TODO fix status error

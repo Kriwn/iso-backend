@@ -23,10 +23,21 @@ export const EnvSchema = {
 		error: "DATABASE_URL is required",
 	}),
 
-
 	// ---------------------- APP -------------------------------//
 	APP_PORT: t.String({
 		error: "APP_PORT is required",
+	}),
+
+	LLM_API_KEY: t.String({
+		error: "LLM_API_KEY is required",
+	}),
+
+	LLM_BASE_URL: t.String({
+		error: "LLM_BASE_URL is required",
+	}),
+
+	POST_LLM_PATH: t.String({
+		error: "POST_LLM_PATH is required",
 	}),
 
 	// BETTER_AUTH_SECRET: t.String({
@@ -75,6 +86,9 @@ export type Env = {
 	// ---------------------- APP -------------------------------//
 
 	APP_PORT: string;
+	LLM_API_KEY: string;
+	LLM_BASE_URL: string;
+	POST_LLM_PATH: string;
 	// BETTER_AUTH_SECRET: string;
 	// BETTER_AUTH_URL: string;
 	// GOOGLE_CLIENT_ID: string;

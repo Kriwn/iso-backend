@@ -1,13 +1,5 @@
+import { guid } from "better-auth/*";
 import { control_status, Controls } from "../../generated/prisma/client";
-
-// export enum ControlStatus =  "NOT_IMPLEMENTED" | "PARTIALLY" | "IMPLEMENTED";
-
-//TODO change type to enum
-// export enum ControlStatus {
-// 	NOT_IMPLEMENTED = "NOT_IMPLEMENTED",
-// 	PARTIALLY = "PARTIALLY",
-// 	IMPLEMENTED = "IMPLEMENTED",
-// }
 
 export interface ControlEntity {
 	id: number;
@@ -15,6 +7,7 @@ export interface ControlEntity {
 	name: string;
 	currentPractice: string;
 	description: string;
+	guidance: string;
 	assessmentControlId: number;
 	status:	 control_status;
 	updatedAt: Date;
@@ -28,6 +21,7 @@ export function toControlEntity(data: Controls){
 		name: data.name,
 		currentPractice: data.currentPractice,
 		description: data.description,
+		guidance: data.guidance,
 		assessmentControlId: data.assessmentControlId,
 		status: data.status,
 		updatedAt: data.updatedAt,
