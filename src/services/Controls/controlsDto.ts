@@ -1,5 +1,3 @@
-// import { ControlStatus } from "../../entities/ControlsEntity";
-
 import { control_status } from "../../../generated/prisma/enums";
 
 export interface CreateControlDto {

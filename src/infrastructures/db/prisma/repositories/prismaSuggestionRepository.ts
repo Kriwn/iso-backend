@@ -1,7 +1,7 @@
 import { PrismaClient } from "../../../../../generated/prisma/client";
 import { SuggestionEntity, toSuggestionEntity } from "../../../../entities/suggestionEntity";
 import { SuggestionRepository } from "../../../../repositories/suggestionRepository";
-import { createSuggestionDto, updateSuggestionDto } from "../../../../services/Suggestion/SuggestionDto";
+import { createSuggestionDto, updateSuggestionDto } from "../../../../services/suggestion/suggestionDto";
 
 export class prismaSuggestionRepository implements SuggestionRepository {
 	constructor(private readonly prisma: PrismaClient) {}

@@ -31,9 +31,6 @@ export class PrismaUserRepository implements UserRepository {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
 				throw new UserNotFoundError(id);
 			}
-			// if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
-			// 	throw new UserAlreadyExistsError(data.email!);
-			// }
 			throw error;
 		}
 	}
@@ -53,12 +50,12 @@ export class PrismaUserRepository implements UserRepository {
 		return res.map(toUserEntity);
 	}
 
-	async delete(id: string): Promise<UserEntity> {
+	async delete(id: string): Promise<void> {
 		try {
-			const res = await this.prisma.user.delete({
+			await this.prisma.user.delete({
 				where: { id },
 			});
-			return toUserEntity(res);
+			return;
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
 				throw new UserNotFoundError(id);

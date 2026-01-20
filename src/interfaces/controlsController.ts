@@ -1,6 +1,6 @@
 import Elysia, { t } from "elysia";
-import { CreateControlDto, UpdateControlDto } from "../services/Controls/controlsDto";
-import { ControlsService } from "../services/Controls/controlsService";
+import { CreateControlDto, UpdateControlDto } from "../services/controls/controlsDto";
+import { ControlsService } from "../services/controls/controlsService";
 import { ControlNotFoundError } from "../errors/ControlsError";
 
 // TODO fix status error
@@ -120,8 +120,9 @@ export const ControlsController = (ControlsService: ControlsService) =>
 			"/:id",
 			async ({ params, set }) => {
 				try {
-					set.status = 200;
-					return await ControlsService.deleteControl(params.id);
+					await ControlsService.deleteControl(params.id);
+					set.status = 204;
+					return;
 				} catch (err) {
 					if (err instanceof ControlNotFoundError) {
 						set.status = 404;

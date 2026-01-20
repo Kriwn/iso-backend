@@ -1,8 +1,8 @@
-import { evidenceRepository } from "../../repositories/evidenceRepository";
+import { EvidenceRepository } from "../../repositories/evidenceRepository";
 import { createEvidenceDto, updateEvidenceDto } from "./evidenceDto";
 
 export class EvidenceService {
-	constructor(private evidenceRepository: evidenceRepository) {}
+	constructor(private evidenceRepository: EvidenceRepository) {}
 
 	async createEvidence(data: createEvidenceDto) {
 		return this.evidenceRepository.create(data);

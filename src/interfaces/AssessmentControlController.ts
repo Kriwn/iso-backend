@@ -1,7 +1,7 @@
 import Elysia, { t } from "elysia";
-import { AssessmentControlService } from "../services/AssessmentControl/AssessmentControlService";
-import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "../services/AssessmentControl/AssessmentControlDto";
-import { AssessmentControlNotFoundError } from "../errors/AssessmentControlError";
+import { AssessmentControlService } from "../services/assessmentControl/assessmentControlService";
+import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "../services/assessmentControl/AssessmentControlDto";
+import { AssessmentControlNotFoundError } from "../errors/assessmentControlError";
 
 export const AssessmentControlController= (assessmentControlService: AssessmentControlService) =>
 	new Elysia({ prefix: "/api/assessments", tags: ["Assessment"] })
@@ -114,8 +114,9 @@ export const AssessmentControlController= (assessmentControlService: AssessmentC
 			"/:id",
 			async ({ params, set }) => {
 				try {
-					set.status = 200;
-					return await assessmentControlService.deleteAssessmentControl(params.id);
+					await assessmentControlService.deleteAssessmentControl(params.id);
+					set.status = 204;
+					return;
 				} catch (err) {
 					if (err instanceof AssessmentControlNotFoundError) {
 						set.status = 404;

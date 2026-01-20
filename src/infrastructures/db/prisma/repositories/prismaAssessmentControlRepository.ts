@@ -1,9 +1,10 @@
 import { Prisma, PrismaClient } from "../../../../../generated/prisma/client";
-import { AssessmentControlEntity, toAssessmentControlEntity } from "../../../../entities/AssessmentControlEntity";
-import { AssessmentControlNotFoundError } from "../../../../errors/AssessmentControlError";
-import { AssessmentControlRepository } from "../../../../repositories/AssessmentControlRepository";
-import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "../../../../services/AssessmentControl/AssessmentControlDto";
+import { AssessmentControlEntity, toAssessmentControlEntity } from "../../../../entities/assessmentControlEntity";
+import { AssessmentControlNotFoundError } from "../../../../errors/assessmentControlError";
+import { AssessmentControlRepository } from "../../../../repositories/assessmentControlRepository";
+import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "../../../../services/assessmentControl/assessmentControlDto";
 
+// TODO fix dto
 export class PrismaIsoAssessmentControlRepository implements AssessmentControlRepository {
 	constructor(private prisma: PrismaClient) {}
 
@@ -46,12 +47,12 @@ export class PrismaIsoAssessmentControlRepository implements AssessmentControlRe
 		}
 	}
 
-	async delete(id: number): Promise<AssessmentControlEntity> {
+	async delete(id: number): Promise<void> {
 		try {
-			const res = await this.prisma.assessmentControl.delete({
+			await this.prisma.assessmentControl.delete({
 				where: { id },
 			});
-			return toAssessmentControlEntity(res)
+			return ;
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
 				throw new AssessmentControlNotFoundError(id);

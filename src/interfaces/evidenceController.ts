@@ -1,7 +1,7 @@
 import Elysia, { t } from "elysia";
 import { EvidenceAlreadyExistsError, EvidenceNotFoundError } from "../errors/evidenceError";
-import { createEvidenceDto } from "../services/Evidence/evidenceDto";
-import { EvidenceService } from "../services/Evidence/evidenceService";
+import { createEvidenceDto } from "../services/evidence/evidenceDto";
+import { EvidenceService } from "../services/evidence/evidenceService";
 
 export const evidenceController = (EvidenceService: EvidenceService) =>
 	new Elysia({ prefix: "/api/evidence", tags: ["Evidence"] })

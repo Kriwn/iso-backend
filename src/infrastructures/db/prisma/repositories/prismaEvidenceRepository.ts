@@ -2,7 +2,7 @@ import { Prisma, PrismaClient } from "../../../../../generated/prisma/client";
 import { EvidenceEntity, toEvidenceEntity } from "../../../../entities/evidenceEntity";
 import { EvidenceAlreadyExistsError, EvidenceNotFoundError } from "../../../../errors/evidenceError";
 import { evidenceRepository } from "../../../../repositories/evidenceRepository";
-import { createEvidenceDto, updateEvidenceDto } from "../../../../services/Evidence/evidenceDto";
+import { createEvidenceDto, updateEvidenceDto } from "../../../../services/evidence/evidenceDto";
 
 export class prismaEvidenceRepository implements evidenceRepository {
 	constructor(private prisma: PrismaClient) { }
@@ -60,12 +60,11 @@ export class prismaEvidenceRepository implements evidenceRepository {
 		return res.map(toEvidenceEntity);
 	}
 
-	async delete(id: number): Promise<EvidenceEntity> {
+	async delete(id: number): Promise<void> {
 		try {
-			const res = await this.prisma.evidence.delete({
+			await this.prisma.evidence.delete({
 				where: { id: id },
 			});
-			return toEvidenceEntity(res);
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
 				throw new EvidenceNotFoundError(id);

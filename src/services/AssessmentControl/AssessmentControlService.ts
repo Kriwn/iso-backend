@@ -1,5 +1,5 @@
-import { AssessmentControlRepository } from "../../repositories/AssessmentControlRepository";
-import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "./AssessmentControlDto";
+import { AssessmentControlRepository } from "../../repositories/assessmentControlRepository";
+import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "./assessmentControlDto";
 
 export class AssessmentControlService {
 	constructor(private assessmentControlRepository: AssessmentControlRepository) {}

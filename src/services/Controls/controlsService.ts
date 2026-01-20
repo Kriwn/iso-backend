@@ -1,5 +1,5 @@
-import { ControlsRepository } from "../../repositories/ControlsRepository";
-import { CreateControlDto, UpdateControlDto } from "./ControlsDto";
+import { ControlsRepository } from "../../repositories/controlsRepository";
+import { CreateControlDto, UpdateControlDto } from "./controlsDto";
 
 export class ControlsService {
 	constructor(private controlsRepository: ControlsRepository) {}

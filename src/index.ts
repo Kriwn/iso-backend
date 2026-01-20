@@ -2,9 +2,7 @@ import cors from "@elysiajs/cors";
 import { Elysia, t } from "elysia";
 import { initLogger, logger } from "./config/logger";
 import { loadEnv } from "./config/env";
-import { CreateRedisClient } from "./infrastructures/db/redis/client";
 import { getPrismaClient } from "./infrastructures/db/prisma/client";
-import { RedisService } from "./infrastructures/db/redis/redisService";
 import { z } from "zod";
 import { getAuth } from "./utils/auth";
 import { PrismaUserRepository } from "./infrastructures/db/prisma/repositories/prismaUserRepository";
@@ -20,8 +18,8 @@ import { IsoAssessmentController } from "./interfaces/isoAssessmentController";
 import { Prisma } from "../generated/prisma/browser";
 import { PrismaIsoAssessmentControlRepository } from "./infrastructures/db/prisma/repositories/prismaAssessmentControlRepository";
 import { PrismaControlsRepository } from "./infrastructures/db/prisma/repositories/prismaControlsRepository";
-import { AssessmentControlService } from "./services/AssessmentControl/assessmentControlService";
-import { ControlsService } from "./services/Controls/controlsService";
+import { AssessmentControlService } from "./services/assessmentControl/assessmentControlService";
+import { ControlsService } from "./services/controls/controlsService";
 import { AssessmentControlController } from "./interfaces/assessmentControlController";
 import { ControlsController } from "./interfaces/controlsController";
 
@@ -33,14 +31,7 @@ const app = new Elysia({
 const env = loadEnv(app);
 initLogger(env.NODE_ENV);
 logger.info("Init Env");
-const redis = CreateRedisClient(env);
 const prisma = getPrismaClient();
-
-
-
-const redisService = new RedisService(redis);
-
-
 
 
 const userRepo = new PrismaUserRepository(prisma);
@@ -72,23 +63,6 @@ app.use(
     maxAge: 5, //defualt value
   })
 )
-app
-  .get("/redis-test", async () => {
-    const Message = z.object({
-      message: z.string(),
-    });
-
-    await redisService.saveCache("test", { message: "Hello, Redis!" }, 1200);
-    const data = await redisService.getCache("test", Message);
-
-    if (!data) {
-      logger.warn("No data found or failed to parse.");
-      return { ok: false };
-    }
-
-    logger.info("Retrieved from Redis:", data);
-    return { ok: true, data };
-  })
   .get("/", () => "Hello Elysia")
   .listen(env.APP_PORT);
 

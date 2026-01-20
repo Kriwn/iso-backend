@@ -1,5 +1,5 @@
 import Elysia, { t } from "elysia";
-import { createSuggestionDto, updateSuggestionDto } from "../services/Suggestion/SuggestionDto";
+import { createSuggestionDto, updateSuggestionDto } from "../services/suggestion/suggestionDto";
 
 export const suggestionController = (SuggestionService: SuggestionService) =>
 	new Elysia({ prefix: "/api/suggestions", tags: ["Suggestions"] })

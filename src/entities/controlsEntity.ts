@@ -1,4 +1,3 @@
-import { guid } from "better-auth/*";
 import { control_status, Controls } from "../../generated/prisma/client";
 
 export interface ControlEntity {

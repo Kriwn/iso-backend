@@ -69,12 +69,12 @@ export class PrismaIsoAssessmentRepository implements IsoAssessmentRepository {
 		}
 	}
 
-	async delete(id: number): Promise<IsoAssessmentEntity> {
+	async delete(id: number): Promise<void> {
 		try {
-			const res = await this.prisma.isoAssessment.delete({
+			await this.prisma.isoAssessment.delete({
 				where: { id },
 			});
-			return toIsoAssessmentEntity(res);
+			return ;
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
 				throw new IsoAssessmentNotFoundError(id);

@@ -1,7 +1,5 @@
 import { iso_status, IsoAssessment } from "../../generated/prisma/client";
 
-
-
 export interface IsoAssessmentEntity {
 	id: number;
 	name: string;

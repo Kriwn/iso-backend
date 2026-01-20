@@ -1,5 +1,5 @@
 import { SuggestionEntity } from "../entities/suggestionEntity";
-import { createSuggestionDto, updateSuggestionDto } from "../services/Suggestion/suggestionDto";
+import { createSuggestionDto, updateSuggestionDto } from "../services/suggestion/suggestionDto";
 
 export interface SuggestionRepository {
 	create(data: createSuggestionDto) : Promise<SuggestionEntity>;

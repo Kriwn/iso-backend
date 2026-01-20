@@ -7,17 +7,6 @@ export const EnvSchema = {
 		error: "NODE_ENV is required",
 	}),
 
-	REDIS_PASSWORD: t.String({
-		error: "REDIS_PASSWORD is required",
-	}),
-	REDIS_PORT: t.String({
-		error: "REDIS_PORT is required",
-	}),
-
-	REDIS_URL: t.String({
-		error: "REDIS_URL is required",
-	}),
-
 
 	DATABASE_URL: t.String({
 		error: "DATABASE_URL is required",
@@ -77,9 +66,6 @@ export const EnvSchema = {
 
 export type Env = {
 	NODE_ENV: string;
-	REDIS_PASSWORD: string;
-	REDIS_PORT: string;
-	REDIS_URL: string;
 	DATABASE_URL: string;
 
 

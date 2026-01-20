@@ -122,8 +122,9 @@ export const IsoAssessmentController =(isoAssessmentService: IsoAssessmentServic
 			"/:id",
 			async ({ params, set }) => {
 				try {
-					set.status = 200;
-					return await isoAssessmentService.deleteIso(params.id);
+					await isoAssessmentService.deleteIso(params.id);
+					set.status = 204;
+					return;
 				} catch (err) {
 					if (err instanceof IsoAssessmentNotFoundError) {
 						set.status = 404;

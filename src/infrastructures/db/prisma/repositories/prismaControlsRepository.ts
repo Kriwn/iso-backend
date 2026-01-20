@@ -1,8 +1,8 @@
 import { Prisma, PrismaClient } from "../../../../../generated/prisma/client";
-import { ControlEntity } from "../../../../entities/ControlsEntity";
-import { ControlNotFoundError } from "../../../../errors/ControlsError";
-import { ControlsRepository } from "../../../../repositories/ControlsRepository";
-import { CreateControlDto } from "../../../../services/Controls/ControlsDto";
+import { ControlEntity } from "../../../../entities/controlsEntity";
+import { ControlNotFoundError } from "../../../../errors/controlsError";
+import { ControlsRepository } from "../../../../repositories/controlsRepository";
+import { CreateControlDto } from "../../../../services/controls/controlsDto";
 
 export class PrismaControlsRepository  implements ControlsRepository {
 	constructor(private prisma: PrismaClient) {}
@@ -46,12 +46,12 @@ export class PrismaControlsRepository  implements ControlsRepository {
 		}
 	}
 
-	async delete(id: number): Promise<ControlEntity> {
+	async delete(id: number): Promise<void> {
 		try {
-			const res = await this.prisma.controls.delete({
+			await this.prisma.controls.delete({
 				where: { id },
 			});
-			return res as ControlEntity;
+			return ;
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
 				throw new ControlNotFoundError(id);

@@ -10,5 +10,5 @@ export interface UserRepository {
 
 	update(id: string,data: UpdateUserDto): Promise<UserEntity>;
 
-	delete(id: string): Promise<UserEntity>;
+	delete(id: string): Promise<void>;
 }
