@@ -58,7 +58,6 @@ export const assessmentControlController= (assessmentControlService: AssessmentC
 						maxCount: body.maxCount,
 						context: body.context,
 						type: body.type,
-						isoAssessmentId: body.isoAssessmentId,
 					};
 					return await assessmentControlService.updateAssessmentControl(params.id, dto);
 				} catch (err) {
