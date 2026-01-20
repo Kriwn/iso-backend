@@ -25,6 +25,7 @@ export const ControlsController = (controlsService: ControlsService) =>
 						name: body.name,
 						currentPractice: body.currentPractice,
 						description: body.description,
+						guidance: body.guidance,
 						assessmentControlId: body.assessmentControlId,
 						status: body.status,
 					};
@@ -41,6 +42,7 @@ export const ControlsController = (controlsService: ControlsService) =>
 				name: t.String(),
 				currentPractice: t.String(),
 				description: t.String(),
+				guidance: t.String(),
 				assessmentControlId: t.Number(),
 				status: t.Enum(ControlStatusEnum),
 			},
@@ -88,6 +90,7 @@ export const ControlsController = (controlsService: ControlsService) =>
 						name: body.name,
 						currentPractice: body.currentPractice,
 						description: body.description,
+						guidance: body.guidance,
 						assessmentControlId: body.assessmentControlId,
 						status: body.status,
 					};
@@ -109,6 +112,7 @@ export const ControlsController = (controlsService: ControlsService) =>
 						name: t.Optional(t.String()),
 						currentPractice: t.Optional(t.String()),
 						description: t.Optional(t.String()),
+						guidance: t.Optional(t.String()),
 						assessmentControlId: t.Optional(t.Number()),
 						status: t.Enum(ControlStatusEnum),
 					},
