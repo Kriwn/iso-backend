@@ -4,3 +4,10 @@ export class ControlNotFoundError extends Error {
 		this.name = "ControlNotFoundError";
 	}
 }
+
+export class ControlCodeAlreadyExistsError extends Error {
+	constructor(code: string) {
+		super(`Control with code ${code} already exists`);
+		this.name = "ControlCodeAlreadyExistsError";
+	}
+}

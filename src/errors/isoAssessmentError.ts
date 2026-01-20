@@ -4,3 +4,10 @@ export class IsoAssessmentNotFoundError extends Error {
 		this.name = "IsoAssessmentNotFoundError";
 	}
 }
+
+export class IsoAssessmentYearAlreadyExistsError extends Error {
+	constructor(year: number) {
+		super(`ISO Assessment with year ${year} already exists`);
+		this.name = "IsoAssessmentYearAlreadyExistsError";
+	}
+}

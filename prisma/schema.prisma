@@ -37,7 +37,7 @@ model Evidence {
 
 model Controls {
   id                  Int               @id @default(autoincrement()) @db.Integer
-  code                String            @db.VarChar(20)
+  code                String            @db.VarChar(20) @unique
   name                String            @db.VarChar(255)
   currentPractice     String            @db.Text
   description         String            @db.Text
@@ -83,7 +83,7 @@ enum controls_type {
 model IsoAssessment {
   id     Int        @id @default(autoincrement()) @db.Integer
   name   String     @db.VarChar(255)
-  year   Int        @db.Integer
+  year   Int        @db.Integer @unique
   status iso_status @default(DRAFT)
 
   companyId Int     @db.Integer

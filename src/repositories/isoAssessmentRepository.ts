@@ -1,7 +1,7 @@
 import { IsoAssessmentEntity } from "../entities/isoAssessmentEntity";
 import { CreateIsoAssessmentDto, UpdateIsoAssessmentDto, UpdatePrivateIsoAssessmentDto } from "../services/isoAssessment/isoAssessmentDto";
 
-//TODO create summarize methods and need to protect crate with the same
+//TODO create summarize methods
 export interface IsoAssessmentRepository {
 
 	create(data: CreateIsoAssessmentDto): Promise<IsoAssessmentEntity>;

@@ -106,7 +106,6 @@ export const userController = (userService: UserService) =>
 				detail: { summary: "Update user by id" },
 				params: t.Object({ id: t.String() }),
 				body: t.Object({
-					// email: t.Optional(t.String({ format: "email" })),
 					firstName: t.Optional(t.String()),
 					lastName: t.Optional(t.String()),
 					role: t.Optional(t.Enum(UserRoleEnum)),
