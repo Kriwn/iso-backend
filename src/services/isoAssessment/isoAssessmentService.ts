@@ -17,11 +17,11 @@ export class IsoAssessmentService {
 		private assessmentControlRepository: AssessmentControlRepository
 	) { }
 
+	//TODO handle transaction error
 	async createIso(data: CreateIsoAssessmentDto) {
 		try {
 			return await this.prisma.$transaction(async (tx) => {
 				const isoAssessment = await this.isoAssessmentRepository.createWithTx(tx, data);
-				console.log('isoAssessment created:', isoAssessment);
 				const dtos: CreateAssessmentControlDto[] = [
 					createAssessmentControlDto(37, "", "ORGANIZATION", isoAssessment.id),
 					createAssessmentControlDto(8, "", "PEOPLE", isoAssessment.id),
@@ -34,7 +34,6 @@ export class IsoAssessmentService {
 			});
 		}
 			catch (error) {
-				console.error('Error creating ISO Assessment with controls:', error);
 				throw error;
 			}
 		}

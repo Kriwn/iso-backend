@@ -90,7 +90,6 @@ export const userController = (userService: UserService) =>
 						role: body.role,
 						image: body.image,
 					};
-					console.log(body);
 					return await userService.updateUser(params.id, dto);
 				} catch (err) {
 					if (err instanceof UserNotFoundError) {

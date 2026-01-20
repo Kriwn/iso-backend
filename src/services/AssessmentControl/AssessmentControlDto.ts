@@ -13,7 +13,6 @@ export interface UpdateAssessmentControlDto {
 	maxCount?: number;
 	context?: string;
 	type?: controls_type;
-	isoAssessmentId?: number;
 }
 
 

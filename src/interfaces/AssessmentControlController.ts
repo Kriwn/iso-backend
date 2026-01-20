@@ -78,7 +78,6 @@ export const assessmentControlController= (assessmentControlService: AssessmentC
 					maxCount: t.Optional(t.Number()),
 					context: t.Optional(t.String()),
 					type: t.Optional(t.Enum(AssessmentControlTypeEnum)),
-					isoAssessmentId: t.Optional(t.Number()),
 				},
 				{ additionalProperties: false }
 			),

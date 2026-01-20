@@ -3,6 +3,16 @@ import { IsoAssessmentNotFoundError } from "../errors/isoAssessmentError";
 import { CreateIsoAssessmentDto } from "../services/isoAssessment/isoAssessmentDto";
 import Elysia, { t } from "elysia";
 import { IsoAssessmentService } from "../services/isoAssessment/isoAssessmentService";
+import { iso_status } from "../../generated/prisma/enums";
+
+const IsoAssessmentStatusEnum = {
+  	DRAFT: iso_status.DRAFT,
+  	IN_PROGRESS: iso_status.IN_PROGRESS,
+  	COMPLETED: iso_status.COMPLETED,
+} as const;
+
+type IsoAssessmentStatus =
+	(typeof IsoAssessmentStatusEnum)[keyof typeof IsoAssessmentStatusEnum];
 
 export const isoAssessmentController =(isoAssessmentService: IsoAssessmentService) =>
 	new Elysia({ prefix: "/api/iso-assessments", tags: ["ISO Assessment"] })
@@ -113,6 +123,7 @@ export const isoAssessmentController =(isoAssessmentService: IsoAssessmentServic
 					{
 						name: t.Optional(t.String()),
 						year: t.Optional(t.Number()),
+						status: t.Optional(t.Enum(IsoAssessmentStatusEnum)),
 					},
 					{ additionalProperties: false }
 				),

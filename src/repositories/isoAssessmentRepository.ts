@@ -1,7 +1,7 @@
 import { IsoAssessmentEntity } from "../entities/isoAssessmentEntity";
 import { CreateIsoAssessmentDto, UpdateIsoAssessmentDto, UpdatePrivateIsoAssessmentDto } from "../services/isoAssessment/isoAssessmentDto";
 
-//TODO create summarize methods
+//TODO create summarize methods and need to protect crate with the same
 export interface IsoAssessmentRepository {
 
 	create(data: CreateIsoAssessmentDto): Promise<IsoAssessmentEntity>;
@@ -12,7 +12,9 @@ export interface IsoAssessmentRepository {
 	getAllByCompanyId(companyId: number): Promise<IsoAssessmentEntity[]>;
 
 	update(id: number, data: UpdatePrivateIsoAssessmentDto): Promise<IsoAssessmentEntity>;
-	updatePrivate(id: number, data: UpdateIsoAssessmentDto): Promise<IsoAssessmentEntity>;
+
+	// not use private update
+	updatePrivate(id: number, data: UpdatePrivateIsoAssessmentDto): Promise<IsoAssessmentEntity>;
 
 	delete(id: number): Promise<void>;
 }
