@@ -52,11 +52,10 @@ model Controls {
   updatedAt DateTime @updatedAt
 }
 
-enum controls_type {
-  PHYSICAL
-  PEOPLE
-  ORGANIZATION
-  TECHNOLOGICAL
+enum control_status {
+  NOT_IMPLEMENTED
+  PARTIALLY
+  IMPLEMENTED
 }
 
 model AssessmentControl {
@@ -74,10 +73,11 @@ model AssessmentControl {
   updatedAt DateTime @updatedAt
 }
 
-enum control_status {
-  NOT_IMPLEMENTED
-  PARTIALLY
-  IMPLEMENTED
+enum controls_type {
+  PHYSICAL
+  PEOPLE
+  ORGANIZATION
+  TECHNOLOGICAL
 }
 
 model IsoAssessment {

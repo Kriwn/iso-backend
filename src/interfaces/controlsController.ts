@@ -14,7 +14,6 @@ const ControlStatusEnum = {
 type ControlStatus =
   (typeof ControlStatusEnum)[keyof typeof ControlStatusEnum];
 
-// TODO fix status error
 export const ControlsController = (controlsService: ControlsService) =>
 	new Elysia({ prefix: "/api/controls", tags: ["Controls"] })
 		.post(

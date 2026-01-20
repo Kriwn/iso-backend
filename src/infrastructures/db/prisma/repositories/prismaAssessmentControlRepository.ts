@@ -4,7 +4,6 @@ import { AssessmentControlNotFoundError } from "../../../../errors/assessmentCon
 import { AssessmentControlRepository } from "../../../../repositories/assessmentControlRepository";
 import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "../../../../services/assessmentControl/assessmentControlDto";
 
-// TODO fix dto
 export class PrismaIsoAssessmentControlRepository implements AssessmentControlRepository {
 	constructor(private prisma: PrismaClient) {}
 
