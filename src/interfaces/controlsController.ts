@@ -1,10 +1,21 @@
 import Elysia, { t } from "elysia";
 import { CreateControlDto, UpdateControlDto } from "../services/controls/controlsDto";
 import { ControlsService } from "../services/controls/controlsService";
-import { ControlNotFoundError } from "../errors/ControlsError";
+import { ControlNotFoundError } from "../errors/controlsError";
+
+import { control_status } from "../../generated/prisma/client";
+
+const ControlStatusEnum = {
+  NOT_IMPLEMENTED: control_status.NOT_IMPLEMENTED,
+  PARTIALLY_IMPLEMENTED: control_status.PARTIALLY,
+  IMPLEMENTED: control_status.IMPLEMENTED,
+} as const;
+
+type ControlStatus =
+  (typeof ControlStatusEnum)[keyof typeof ControlStatusEnum];
 
 // TODO fix status error
-export const ControlsController = (ControlsService: ControlsService) =>
+export const ControlsController = (controlsService: ControlsService) =>
 	new Elysia({ prefix: "/api/controls", tags: ["Controls"] })
 		.post(
 			"/",
@@ -18,7 +29,7 @@ export const ControlsController = (ControlsService: ControlsService) =>
 						assessmentControlId: body.assessmentControlId,
 						status: body.status,
 					};
-					const control = await ControlsService.createControl(dto);
+					const control = await controlsService.createControl(dto);
 					set.status = 201;
 					return control;
 				} catch (err) {
@@ -32,11 +43,7 @@ export const ControlsController = (ControlsService: ControlsService) =>
 				currentPractice: t.String(),
 				description: t.String(),
 				assessmentControlId: t.Number(),
-				status: t.Union([
-					t.Literal("NOT_IMPLEMENTED"),
-					t.Literal("PARTIALLY"),
-					t.Literal("IMPLEMENTED")
-				]),
+				status: t.Enum(ControlStatusEnum),
 			},
 				{ additionalProperties: false }
 		)
@@ -46,7 +53,7 @@ export const ControlsController = (ControlsService: ControlsService) =>
 			"/:id",
 			async ({ params, set }) => {
 				try {
-					return await ControlsService.getControlById(params.id);
+					return await controlsService.getControlById(params.id);
 				} catch (err) {
 					if (err instanceof ControlNotFoundError) {
 						set.status = 404;
@@ -66,7 +73,7 @@ export const ControlsController = (ControlsService: ControlsService) =>
 			"/",
 			async ({ set }) => {
 				try {
-					return await ControlsService.getAllControls();
+					return await controlsService.getAllControls();
 				} catch (err) {
 					set.status = 500;
 					return { message: "Internal Server Error" };
@@ -85,7 +92,7 @@ export const ControlsController = (ControlsService: ControlsService) =>
 						assessmentControlId: body.assessmentControlId,
 						status: body.status,
 					};
-					return await ControlsService.updateControl(params.id, dto);
+					return await controlsService.updateControl(params.id, dto);
 				} catch (err) {
 					if (err instanceof ControlNotFoundError) {
 						set.status = 404;
@@ -104,13 +111,7 @@ export const ControlsController = (ControlsService: ControlsService) =>
 						currentPractice: t.Optional(t.String()),
 						description: t.Optional(t.String()),
 						assessmentControlId: t.Optional(t.Number()),
-						status: t.Optional(
-							t.Union([
-								t.Literal("NOT_IMPLEMENTED"),
-								t.Literal("PARTIALLY"),
-								t.Literal("IMPLEMENTED")
-							])
-						),
+						status: t.Enum(ControlStatusEnum),
 					},
 					{ additionalProperties: false }
 				),
@@ -120,7 +121,7 @@ export const ControlsController = (ControlsService: ControlsService) =>
 			"/:id",
 			async ({ params, set }) => {
 				try {
-					await ControlsService.deleteControl(params.id);
+					await controlsService.deleteControl(params.id);
 					set.status = 204;
 					return;
 				} catch (err) {

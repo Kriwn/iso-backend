@@ -16,7 +16,7 @@ export class PrismaIsoAssessmentControlRepository implements AssessmentControlRe
 			throw error;
 		}
 	}
-
+x
 	async getById(id: number): Promise<AssessmentControlEntity | null> {
 		const res = await this.prisma.assessmentControl.findUnique({
 			where: { id },

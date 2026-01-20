@@ -1,7 +1,8 @@
 import Elysia, { t } from "elysia";
 import { createSuggestionDto, updateSuggestionDto } from "../services/suggestion/suggestionDto";
+import { SuggestionService } from "../services/suggestion/suggestionService";
 
-export const suggestionController = (SuggestionService: SuggestionService) =>
+export const suggestionController = (suggestionService: SuggestionService) =>
 	new Elysia({ prefix: "/api/suggestions", tags: ["Suggestions"] })
 		.post(
 			"/",
@@ -11,7 +12,7 @@ export const suggestionController = (SuggestionService: SuggestionService) =>
 						content: body.content,
 						controlId: body.controlId,
 					};
-					const suggestion = await SuggestionService.createSuggestion(dto);
+					const suggestion = await suggestionService.createSuggestion(dto);
 					set.status = 201;
 					return suggestion;
 				} catch (error) {
@@ -34,7 +35,7 @@ export const suggestionController = (SuggestionService: SuggestionService) =>
 			"/control/:controlId",
 			async ({ params, set }) => {
 				try {
-					const suggestion = await SuggestionService.getSuggestionByControlId(
+					const suggestion = await suggestionService.getSuggestionByControlId(
 						params.controlId
 					);
 					if (suggestion) {
@@ -63,7 +64,7 @@ export const suggestionController = (SuggestionService: SuggestionService) =>
 					const dto: updateSuggestionDto = {
 						content: body.content,
 					};
-					const suggestion = await SuggestionService.updateSuggestion(
+					const suggestion = await suggestionService.updateSuggestion(
 						params.id,
 						dto
 					);
@@ -91,7 +92,7 @@ export const suggestionController = (SuggestionService: SuggestionService) =>
 			"/:id",
 			async ({ params, set }) => {
 				try {
-					await SuggestionService.deleteSuggestion(params.id);
+					await suggestionService.deleteSuggestion(params.id);
 					set.status = 204;
 					return;
 				} catch (error) {

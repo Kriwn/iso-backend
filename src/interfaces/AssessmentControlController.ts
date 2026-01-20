@@ -1,8 +1,20 @@
 import Elysia, { t } from "elysia";
 import { AssessmentControlService } from "../services/assessmentControl/assessmentControlService";
-import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "../services/assessmentControl/AssessmentControlDto";
+import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "../services/assessmentControl/assessmentControlDto";
 import { AssessmentControlNotFoundError } from "../errors/assessmentControlError";
+import { controls_type } from "../../generated/prisma/client";
 
+const AssessmentControlTypeEnum = {
+  PHYSICAL: controls_type.PHYSICAL,
+  PEOPLE: controls_type.PEOPLE,
+  ORGANIZATION: controls_type.ORGANIZATION,
+  TECHNOLOGICAL: controls_type.TECHNOLOGICAL,
+} as const;
+
+type AssessmentControlType =
+  (typeof AssessmentControlTypeEnum)[keyof typeof AssessmentControlTypeEnum];
+
+// fix type dto
 export const AssessmentControlController= (assessmentControlService: AssessmentControlService) =>
 	new Elysia({ prefix: "/api/assessments", tags: ["Assessment"] })
 		.post(
@@ -30,12 +42,7 @@ export const AssessmentControlController= (assessmentControlService: AssessmentC
 					count: t.Number(),
 					maxCount: t.Number(),
 					context: t.String(),
-					type: t.Union([
-						t.Literal("PHYSICAL"),
-						t.Literal("PEOPLE"),
-						t.Literal("ORGANIZATION"),
-						t.Literal("TECHNOLOGICAL"),
-					]),
+					type: t.Enum(AssessmentControlTypeEnum),
 					isoAssessmentId: t.Number(),
 				},
 				{ additionalProperties: false }
@@ -70,12 +77,7 @@ export const AssessmentControlController= (assessmentControlService: AssessmentC
 					count: t.Optional(t.Number()),
 					maxCount: t.Optional(t.Number()),
 					context: t.Optional(t.String()),
-					type: t.Optional(t.Union([
-						t.Literal("PHYSICAL"),
-						t.Literal("PEOPLE"),
-						t.Literal("ORGANIZATION"),
-						t.Literal("TECHNOLOGICAL"),
-					])),
+					type: t.Optional(t.Enum(AssessmentControlTypeEnum)),
 					isoAssessmentId: t.Optional(t.Number()),
 				},
 				{ additionalProperties: false }

@@ -2,6 +2,16 @@ import { Elysia, t } from "elysia";
 import { UserService } from "../services/user/userService";
 import { UserAlreadyExistsError, UserNotFoundError } from "../errors/useError";
 import { CreateUserDto, UpdateUserDto } from "../services/user/userDto";
+import { userRole } from "../../generated/prisma/client";
+
+const UserRoleEnum = {
+  ADMIN: userRole.ADMIN,
+  INTERNAL_EXPERT: userRole.INTERNAL_EXPERT,
+  EXTERNAL_EXPERT: userRole.EXTERNAL_EXPERT,
+} as const;
+
+type UserRole =
+  (typeof UserRoleEnum)[keyof typeof UserRoleEnum];
 
 export const userController = (userService: UserService) =>
 	new Elysia({ prefix: "/api/users", tags: ["User"] })
@@ -36,11 +46,7 @@ export const userController = (userService: UserService) =>
 					email: t.String({ format: "email" }),
 					firstName: t.String(),
 					lastName: t.String(),
-					role: t.Union([
-						t.Literal("INTERNAL_EXPERT"),
-						t.Literal("EXTERNAL_EXPERT"),
-						t.Literal("ADMIN"),
-					]),
+					role: t.Enum(UserRoleEnum),
 					image: t.Optional(t.String({ format: "uri" })),
 				},
 				{ additionalProperties: false }
@@ -104,11 +110,7 @@ export const userController = (userService: UserService) =>
 					// email: t.Optional(t.String({ format: "email" })),
 					firstName: t.Optional(t.String()),
 					lastName: t.Optional(t.String()),
-					role: t.Optional(t.Union([
-						t.Literal("ADMIN"),
-						t.Literal("INTERNAL_EXPERT"),
-						t.Literal("EXTERNAL_EXPERT"),
-					])),
+					role: t.Optional(t.Enum(UserRoleEnum)),
 					image: t.Optional(t.String({ format: "uri" })),
 
 				},

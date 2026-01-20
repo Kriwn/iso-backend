@@ -1,10 +1,10 @@
 import { Prisma, PrismaClient } from "../../../../../generated/prisma/client";
 import { EvidenceEntity, toEvidenceEntity } from "../../../../entities/evidenceEntity";
 import { EvidenceAlreadyExistsError, EvidenceNotFoundError } from "../../../../errors/evidenceError";
-import { evidenceRepository } from "../../../../repositories/evidenceRepository";
+import { EvidenceRepository } from "../../../../repositories/evidenceRepository";
 import { createEvidenceDto, updateEvidenceDto } from "../../../../services/evidence/evidenceDto";
 
-export class prismaEvidenceRepository implements evidenceRepository {
+export class prismaEvidenceRepository implements EvidenceRepository {
 	constructor(private prisma: PrismaClient) { }
 
 	async create(data: createEvidenceDto): Promise<EvidenceEntity> {

@@ -3,7 +3,7 @@ import { EvidenceAlreadyExistsError, EvidenceNotFoundError } from "../errors/evi
 import { createEvidenceDto } from "../services/evidence/evidenceDto";
 import { EvidenceService } from "../services/evidence/evidenceService";
 
-export const evidenceController = (EvidenceService: EvidenceService) =>
+export const evidenceController = (evidenceService: EvidenceService) =>
 	new Elysia({ prefix: "/api/evidence", tags: ["Evidence"] })
 		.post(
 			"/",
@@ -14,7 +14,7 @@ export const evidenceController = (EvidenceService: EvidenceService) =>
 						filePath: body.filePath,
 						controlId: body.controlId,
 					};
-					const evidence = await EvidenceService.createEvidence(dto);
+					const evidence = await evidenceService.createEvidence(dto);
 					set.status = 201;
 					return evidence;
 				} catch (error) {
@@ -41,7 +41,7 @@ export const evidenceController = (EvidenceService: EvidenceService) =>
 			"/:id",
 			async ({params, set}) => {
 				try {
-					const evidence = await EvidenceService.getEvidenceById(params.id);
+					const evidence = await evidenceService.getEvidenceById(params.id);
 					set.status = 200;
 					return evidence;
 				} catch (error) {
@@ -64,7 +64,7 @@ export const evidenceController = (EvidenceService: EvidenceService) =>
 			"/",
 			async ({set}) => {
 				try {
-					const evidenceList = await EvidenceService.getAllEvidence();
+					const evidenceList = await evidenceService.getAllEvidence();
 					set.status = 200;
 					return evidenceList;
 				} catch (error) {
@@ -80,7 +80,7 @@ export const evidenceController = (EvidenceService: EvidenceService) =>
 			"getAllByControlId/:controlId",
 			async ({params, set}) => {
 				try {
-					const evidenceList = await EvidenceService.getAllEvidenceByControlId(params.controlId);
+					const evidenceList = await evidenceService.getAllEvidenceByControlId(params.controlId);
 					set.status = 200;
 					return evidenceList;
 				} catch (error) {
@@ -99,7 +99,7 @@ export const evidenceController = (EvidenceService: EvidenceService) =>
 			"/:id",
 			async ({params, body, set}) => {
 				try {
-					const evidence = await EvidenceService.updateEvidence(params.id, body);
+					const evidence = await evidenceService.updateEvidence(params.id, body);
 					set.status = 200;
 					return evidence;
 				} catch (error) {
@@ -133,7 +133,7 @@ export const evidenceController = (EvidenceService: EvidenceService) =>
 			"/:id",
 			async ({params, set}) => {
 				try {
-					await EvidenceService.deleteEvidence(params.id);
+					await evidenceService.deleteEvidence(params.id);
 					set.status = 204;
 					return;
 				} catch (error) {
