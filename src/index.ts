@@ -3,8 +3,6 @@ import { Elysia, t } from "elysia";
 import { initLogger, logger } from "./config/logger";
 import { loadEnv } from "./config/env";
 import { CreateRedisClient } from "./infrastructures/db/redis/client";
-import { RabbitmqService } from "./infrastructures/messaging/rabbitmq/rabbitmqService";
-import { connectRabbit } from "./infrastructures/messaging/rabbitmq/client";
 import { getPrismaClient } from "./infrastructures/db/prisma/client";
 import { RedisService } from "./infrastructures/db/redis/redisService";
 import { z } from "zod";
@@ -19,13 +17,13 @@ import { CompanyController } from "./interfaces/companyController";
 import { PrismaIsoAssessmentRepository } from "./infrastructures/db/prisma/repositories/prismaIsoAssessmentRepository";
 import { IsoAssessmentService } from "./services/isoAssessment/isoAssessmentService";
 import { IsoAssessmentController } from "./interfaces/isoAssessmentController";
-import { AssessmentControlService } from "./services/AssessmentControl/AssessmentControlService";
 import { Prisma } from "../generated/prisma/browser";
 import { PrismaIsoAssessmentControlRepository } from "./infrastructures/db/prisma/repositories/prismaAssessmentControlRepository";
-import { AssessmentControlController } from "./interfaces/AssessmentControlController";
 import { PrismaControlsRepository } from "./infrastructures/db/prisma/repositories/prismaControlsRepository";
-import { ControlsService } from "./services/Controls/ControlsService";
-import { ControlsController } from "./interfaces/ControlsController";
+import { AssessmentControlService } from "./services/AssessmentControl/assessmentControlService";
+import { ControlsService } from "./services/Controls/controlsService";
+import { AssessmentControlController } from "./interfaces/assessmentControlController";
+import { ControlsController } from "./interfaces/controlsController";
 
 const app = new Elysia({
   // normalize: false,
@@ -36,26 +34,9 @@ const env = loadEnv(app);
 initLogger(env.NODE_ENV);
 logger.info("Init Env");
 const redis = CreateRedisClient(env);
-let rabbitmqService: RabbitmqService | null = null;
-const { connection, channel } = await connectRabbit(env);
 const prisma = getPrismaClient();
 
 
-if (!connection || !channel) {
-  logger.error("RabbitMQ not initialized");
-} else {
-  rabbitmqService = new RabbitmqService(connection, channel);
-
-  await rabbitmqService.consumeFromQueue<{ message: string; at: string }>(
-    "test.queue",
-    async (data, raw) => {
-      logger.info("RabbitMQ test consumer received message", {
-        data,
-        fields: raw.fields,
-      });
-    }
-  );
-}
 
 const redisService = new RedisService(redis);
 
@@ -109,30 +90,6 @@ app
     return { ok: true, data };
   })
   .get("/", () => "Hello Elysia")
-  .get("/rabbitmq-test", async () => {
-    if (!rabbitmqService) {
-      logger.error("RabbitMQ service not available");
-      return {
-        ok: false,
-        error: "RabbitMQ not initialized",
-      };
-    }
-
-    const payload = {
-      message: "Hello, RabbitMQ!",
-      at: new Date().toISOString(),
-    };
-
-    // ส่งเข้า queue test.queue
-    await rabbitmqService.publishJson("test.queue", payload);
-
-    logger.info("RabbitMQ test message published", payload);
-
-    return {
-      ok: true,
-      sent: payload,
-    };
-  })
   .listen(env.APP_PORT);
 
 

@@ -23,23 +23,6 @@ export const EnvSchema = {
 		error: "DATABASE_URL is required",
 	}),
 
-	JWT_SECRET: t.String({
-		error: "JWT_SECRET is required",
-	}),
-
-	RABBITMQ_USER: t.String({
-		error: "RABBITMQ_USER is required",
-	}),
-
-	RABBITMQ_PASSWORD: t.String({
-		error: "RABBITMQ_PASSWORD is required",
-	}),
-
-	RABBITMQ_URL: t.String({
-		error: "RABBITMQ_URL is required",
-	}),
-
-
 
 	// ---------------------- APP -------------------------------//
 	APP_PORT: t.String({
@@ -87,10 +70,7 @@ export type Env = {
 	REDIS_PORT: string;
 	REDIS_URL: string;
 	DATABASE_URL: string;
-	JWT_SECRET: string;
-	RABBITMQ_USER: string;
-	RABBITMQ_PASSWORD: string;
-	RABBITMQ_URL: string;
+
 
 	// ---------------------- APP -------------------------------//
 
