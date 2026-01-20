@@ -3,6 +3,8 @@ import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "../servi
 
 export interface AssessmentControlRepository {
 	create(data: CreateAssessmentControlDto): Promise<AssessmentControlEntity>;
+	createManyWithTx(tx: any,data: CreateAssessmentControlDto[]): Promise<AssessmentControlEntity[]>;
+
 	getById(id: number): Promise<AssessmentControlEntity | null>;
 	getAll(): Promise<AssessmentControlEntity[]>;
 	update(id: number, data: UpdateAssessmentControlDto): Promise<AssessmentControlEntity>;

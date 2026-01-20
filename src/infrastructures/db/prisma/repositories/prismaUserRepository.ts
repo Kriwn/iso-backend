@@ -29,6 +29,7 @@ export class PrismaUserRepository implements UserRepository {
 			return toUserEntity(res);
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+				console.log('not found');
 				throw new UserNotFoundError(id);
 			}
 			throw error;

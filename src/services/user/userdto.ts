@@ -8,6 +8,7 @@ export interface CreateUserDto {
 	image?: string | null;
 }
 
+// need to add companyId later
 export interface UpdateUserDto {
 	firstName?: string;
 	lastName?: string;

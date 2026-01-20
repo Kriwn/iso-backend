@@ -17,6 +17,11 @@ export class PrismaIsoAssessmentRepository implements IsoAssessmentRepository {
 		}
 	}
 
+	async createWithTx(tx: Prisma.TransactionClient, data: CreateIsoAssessmentDto): Promise<IsoAssessmentEntity> {
+		const res = await tx.isoAssessment.create({ data });
+		return toIsoAssessmentEntity(res);
+	}
+
 	async getAll(): Promise<IsoAssessmentEntity[]> {
 		const res = await this.prisma.isoAssessment.findMany();
 		return res.map(toIsoAssessmentEntity);

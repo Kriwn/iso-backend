@@ -1,7 +1,7 @@
 import { controls_type} from "../../../generated/prisma/enums";
 
 export interface CreateAssessmentControlDto	{
-	count: number;
+	count?: number;
 	maxCount: number;
 	context: string;
 	type: controls_type;
@@ -14,4 +14,14 @@ export interface UpdateAssessmentControlDto {
 	context?: string;
 	type?: controls_type;
 	isoAssessmentId?: number;
+}
+
+
+export function createAssessmentControlDto(maxCount: number,context: string,type: controls_type,isoAssessmentId: number): CreateAssessmentControlDto {
+	return {
+		maxCount: maxCount,
+		context: context,
+		type: type,
+		isoAssessmentId: isoAssessmentId,
+	};
 }

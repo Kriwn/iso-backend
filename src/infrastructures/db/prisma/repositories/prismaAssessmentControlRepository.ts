@@ -15,7 +15,16 @@ export class PrismaIsoAssessmentControlRepository implements AssessmentControlRe
 			throw error;
 		}
 	}
-x
+
+	async createManyWithTx(tx: Prisma.TransactionClient, data: CreateAssessmentControlDto[]): Promise<AssessmentControlEntity[]> {
+		const res: AssessmentControlEntity[] = [];
+		for (const dto of data) {
+			const created = await tx.assessmentControl.create({ data: dto });
+			res.push(toAssessmentControlEntity(created));
+		}
+		return res;
+	}
+
 	async getById(id: number): Promise<AssessmentControlEntity | null> {
 		const res = await this.prisma.assessmentControl.findUnique({
 			where: { id },
