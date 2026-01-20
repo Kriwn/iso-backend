@@ -4,7 +4,7 @@ import { EvidenceAlreadyExistsError, EvidenceNotFoundError } from "../../../../e
 import { EvidenceRepository } from "../../../../repositories/evidenceRepository";
 import { createEvidenceDto, updateEvidenceDto } from "../../../../services/evidence/evidenceDto";
 
-export class prismaEvidenceRepository implements EvidenceRepository {
+export class PrismaEvidenceRepository implements EvidenceRepository {
 	constructor(private prisma: PrismaClient) { }
 
 	async create(data: createEvidenceDto): Promise<EvidenceEntity> {

@@ -14,7 +14,7 @@ const ControlStatusEnum = {
 type ControlStatus =
   (typeof ControlStatusEnum)[keyof typeof ControlStatusEnum];
 
-export const ControlsController = (controlsService: ControlsService) =>
+export const controlsController = (controlsService: ControlsService) =>
 	new Elysia({ prefix: "/api/controls", tags: ["Controls"] })
 		.post(
 			"/",

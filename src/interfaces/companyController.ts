@@ -3,7 +3,7 @@ import { CompanyService } from "../services/company/companyService";
 import { CompanyCodeAlreadyExistsError, CompanyNotFoundError } from "../errors/companyError";
 import { CreateCompanyDto, UpdateCompanyDto, UpdatePrivateCompanyDto } from "../services/company/companyDto";
 
-export const CompanyController= (companyService: CompanyService) =>
+export const companyController= (companyService: CompanyService) =>
 	new Elysia({ prefix: "/api/companies", tags: ["Company"] })
 		.post(
 			"/",

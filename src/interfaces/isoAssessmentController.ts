@@ -4,7 +4,7 @@ import { CreateIsoAssessmentDto } from "../services/isoAssessment/isoAssessmentD
 import Elysia, { t } from "elysia";
 import { IsoAssessmentService } from "../services/isoAssessment/isoAssessmentService";
 
-export const IsoAssessmentController =(isoAssessmentService: IsoAssessmentService) =>
+export const isoAssessmentController =(isoAssessmentService: IsoAssessmentService) =>
 	new Elysia({ prefix: "/api/iso-assessments", tags: ["ISO Assessment"] })
 		.post(
 			"/",

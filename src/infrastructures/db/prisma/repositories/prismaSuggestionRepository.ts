@@ -3,7 +3,7 @@ import { SuggestionEntity, toSuggestionEntity } from "../../../../entities/sugge
 import { SuggestionRepository } from "../../../../repositories/suggestionRepository";
 import { createSuggestionDto, updateSuggestionDto } from "../../../../services/suggestion/suggestionDto";
 
-export class prismaSuggestionRepository implements SuggestionRepository {
+export class PrismaSuggestionRepository implements SuggestionRepository {
 	constructor(private readonly prisma: PrismaClient) {}
 
 	async create(data: createSuggestionDto): Promise<SuggestionEntity> {

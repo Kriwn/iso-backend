@@ -15,7 +15,7 @@ type AssessmentControlType =
   (typeof AssessmentControlTypeEnum)[keyof typeof AssessmentControlTypeEnum];
 
 // fix type dto
-export const AssessmentControlController= (assessmentControlService: AssessmentControlService) =>
+export const assessmentControlController= (assessmentControlService: AssessmentControlService) =>
 	new Elysia({ prefix: "/api/assessments", tags: ["Assessment"] })
 		.post(
 			"/",
