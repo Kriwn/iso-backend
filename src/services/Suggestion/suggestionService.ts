@@ -1,14 +1,14 @@
 import { SuggestionRepository } from "../../repositories/suggestionRepository";
-import { createSuggestionDto, updateSuggestionDto } from "./suggestionDto";
+import { CreateSuggestionDto, UpdateSuggestionDto } from "./suggestionDto";
 
 export class SuggestionService {
 	constructor(private suggestionRepository: SuggestionRepository) {}
 
-	async createSuggestion(data: createSuggestionDto) {
+	async createSuggestion(data: CreateSuggestionDto) {
 		return this.suggestionRepository.create(data);
 	}
 
-	async updateSuggestion(id: number, data: updateSuggestionDto) {
+	async updateSuggestion(id: number, data: UpdateSuggestionDto) {
 		return this.suggestionRepository.update(id, data);
 	}
 

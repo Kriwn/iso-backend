@@ -1,12 +1,19 @@
 import { Env } from "../../config/env";
-import { LlmSuggestRequest, LlmSuggestResponse } from "./llmDto";
+import { LlmSuggestRequest } from "./llmDto";
+
+export class LLMServiceError extends Error {
+  constructor(id: number) {
+    super(`LLM Service failed for control ID: ${id}`);
+    this.name = "LLMServiceError";
+  }
+}
 
 export class LlmService {
   constructor(private env: Env) {}
 
   async suggestWithLlm(
     payload: LlmSuggestRequest
-  ): Promise<LlmSuggestResponse> {
+  ): Promise<any> {
   console.log("this.env.POST_LLM_PATH:", this.env.POST_LLM_PATH);
   console.log("this.env.POST_LLM_KEY:", this.env.LLM_API_KEY);
   console.log("Payload sent to LLM Service:", payload);
@@ -19,12 +26,9 @@ export class LlmService {
     body: JSON.stringify(payload),
   });
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`LLM service error: ${res.status} - ${text}`);
-  }
+  const data = await res.json();
 
-  return res.json();
+  return data;
 }
 
 }

@@ -1,22 +1,26 @@
-import { PrismaClient } from "../../../../../generated/prisma/client";
+import { Prisma, PrismaClient } from "../../../../../generated/prisma/client";
 import { SuggestionEntity, toSuggestionEntity } from "../../../../entities/suggestionEntity";
 import { SuggestionRepository } from "../../../../repositories/suggestionRepository";
-import { createSuggestionDto, updateSuggestionDto } from "../../../../services/suggestion/suggestionDto";
+import { CreateSuggestionDto, UpdateSuggestionDto } from "../../../../services/suggestion/suggestionDto";
 
 export class PrismaSuggestionRepository implements SuggestionRepository {
 	constructor(private readonly prisma: PrismaClient) {}
 
-	async create(data: createSuggestionDto): Promise<SuggestionEntity> {
+	async create(data: CreateSuggestionDto): Promise<SuggestionEntity> {
 		try {
 			const suggestion = await this.prisma.suggestion.create({data});
 			return toSuggestionEntity(suggestion);
 		}
 		catch (error) {
-			throw new Error("Error creating suggestion: " + error);
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(error.code);
+				throw error;
+			}
+			throw error;
 		}
 	}
 
-	async update(id: number, data: updateSuggestionDto): Promise<SuggestionEntity> {
+	async update(id: number, data: UpdateSuggestionDto): Promise<SuggestionEntity> {
 		try {
 			const suggestion = await this.prisma.suggestion.update({
 				where: { id },
@@ -25,6 +29,9 @@ export class PrismaSuggestionRepository implements SuggestionRepository {
 			return toSuggestionEntity(suggestion);
 		}
 		catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(error.code);
+			}
 			throw new Error("Error updating suggestion: " + error);
 		}
 	}

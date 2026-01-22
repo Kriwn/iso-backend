@@ -2,7 +2,8 @@ import { AssessmentControlNotFoundError } from "../../errors/assessmentControlEr
 import { AssessmentControlRepository } from "../../repositories/assessmentControlRepository";
 import { ControlsRepository } from "../../repositories/controlsRepository";
 import { SuggestionRepository } from "../../repositories/suggestionRepository";
-import { LlmService } from "../llm/llmService";
+import { LlmService, LLMServiceError } from "../llm/llmService";
+import { CreateSuggestionDto } from "../suggestion/suggestionDto";
 import { CreateControlDto, UpdateControlDto } from "./controlsDto";
 import { normalizeControlCode, validateControlCodeForType } from "./iso27001-controls.validator";
 
@@ -54,21 +55,20 @@ export class ControlsService {
 			"userContext": Control.userContext,
 			"evidenceDescription": Control.evidenceDescription,
 		};
-		console.log("Before LLM Service Call:");
 		const res = await this.llmService.suggestWithLlm(payload);
-		console.log("After LLM Service Call:");
-		console.log(res);
 
+		if (!res.ok) {
+			throw new LLMServiceError(id);
+		}
 
-		console.log("------------------------------------------------");
 		let suggest = await this.suggestionRepository.getByControlId(id);
 		if (!suggest) {
 			suggest = await this.suggestionRepository.create({
 				controlId: id,
-				content: res.suggestion,
+				content: res.aiSuggestion,
 			});
 			suggest = await this.suggestionRepository.update(suggest.id, {
-				content: res.suggestion,
+				content: res.aiSuggestion,
 			});
 		}
 		return suggest;

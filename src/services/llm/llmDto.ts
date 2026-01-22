@@ -7,6 +7,3 @@ export interface LlmSuggestRequest {
   currentPractice: string;
 }
 
-export interface LlmSuggestResponse {
-  suggestion: string;
-}

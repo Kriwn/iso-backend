@@ -1,5 +1,5 @@
 import Elysia, { t } from "elysia";
-import { createSuggestionDto, updateSuggestionDto } from "../services/suggestion/suggestionDto";
+import { CreateSuggestionDto, UpdateSuggestionDto } from "../services/suggestion/suggestionDto";
 import { SuggestionService } from "../services/suggestion/suggestionService";
 
 export const suggestionController = (suggestionService: SuggestionService) =>
@@ -8,7 +8,7 @@ export const suggestionController = (suggestionService: SuggestionService) =>
 			"/",
 			async ({ body, set }) => {
 				try {
-					const dto: createSuggestionDto = {
+					const dto: CreateSuggestionDto = {
 						content: body.content,
 						controlId: body.controlId,
 					};
@@ -61,7 +61,7 @@ export const suggestionController = (suggestionService: SuggestionService) =>
 			"/:id",
 			async ({ params, body, set }) => {
 				try {
-					const dto: updateSuggestionDto = {
+					const dto: UpdateSuggestionDto = {
 						content: body.content,
 					};
 					const suggestion = await suggestionService.updateSuggestion(
