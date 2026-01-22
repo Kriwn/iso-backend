@@ -42,6 +42,8 @@ model Controls {
   currentPractice     String            @db.Text
   description         String            @db.Text
   guidance            String            @db.Text
+  userContext          String?            @db.Text
+  evidenceDescription   String?            @db.Text
   status              control_status    @default(NOT_IMPLEMENTED)
   assessmentControlId Int               @db.Integer
   assessmentControl   AssessmentControl @relation(fields: [assessmentControlId], references: [id], onDelete: Cascade)

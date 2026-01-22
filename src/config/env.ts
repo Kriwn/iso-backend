@@ -21,9 +21,9 @@ export const EnvSchema = {
 		error: "LLM_API_KEY is required",
 	}),
 
-	LLM_BASE_URL: t.String({
-		error: "LLM_BASE_URL is required",
-	}),
+	// LLM_BASE_URL: t.String({
+		// error: "LLM_BASE_URL is required",
+	// }),
 
 	POST_LLM_PATH: t.String({
 		error: "POST_LLM_PATH is required",
@@ -73,7 +73,7 @@ export type Env = {
 
 	APP_PORT: string;
 	LLM_API_KEY: string;
-	LLM_BASE_URL: string;
+	// LLM_BASE_URL: string;
 	POST_LLM_PATH: string;
 	// BETTER_AUTH_SECRET: string;
 	// BETTER_AUTH_URL: string;

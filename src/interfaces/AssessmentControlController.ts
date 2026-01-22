@@ -21,9 +21,7 @@ export const assessmentControlController= (assessmentControlService: AssessmentC
 			async ({ body, set }) => {
 				try {
 					const dto: CreateAssessmentControlDto = {
-						count: body.count,
-						maxCount: body.maxCount,
-						context: body.context,
+						description: body.description,
 						type: body.type,
 						isoAssessmentId: body.isoAssessmentId,
 					};
@@ -38,9 +36,7 @@ export const assessmentControlController= (assessmentControlService: AssessmentC
 			{
 				detail: { summary: "Create assessment control" },
 				body: t.Object({
-					count: t.Number(),
-					maxCount: t.Number(),
-					context: t.String(),
+					description: t.String(),
 					type: t.Enum(AssessmentControlTypeEnum),
 					isoAssessmentId: t.Number(),
 				},
@@ -53,9 +49,7 @@ export const assessmentControlController= (assessmentControlService: AssessmentC
 			async ({ params, body, set }) => {
 				try {
 					const dto: UpdateAssessmentControlDto = {
-						count: body.count,
-						maxCount: body.maxCount,
-						context: body.context,
+						description: body.description,
 						type: body.type,
 					};
 					return await assessmentControlService.updateAssessmentControl(params.id, dto);
@@ -72,9 +66,7 @@ export const assessmentControlController= (assessmentControlService: AssessmentC
 				detail: { summary: "Update assessment control" },
 				params: t.Object({ id: t.Number() }),
 				body: t.Object({
-					count: t.Optional(t.Number()),
-					maxCount: t.Optional(t.Number()),
-					context: t.Optional(t.String()),
+					description: t.Optional(t.String()),
 					type: t.Optional(t.Enum(AssessmentControlTypeEnum)),
 				},
 				{ additionalProperties: false }

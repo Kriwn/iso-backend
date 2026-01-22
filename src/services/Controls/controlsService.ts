@@ -1,11 +1,81 @@
+import { AssessmentControlNotFoundError } from "../../errors/assessmentControlError";
+import { AssessmentControlRepository } from "../../repositories/assessmentControlRepository";
 import { ControlsRepository } from "../../repositories/controlsRepository";
+import { SuggestionRepository } from "../../repositories/suggestionRepository";
+import { LlmService } from "../llm/llmService";
 import { CreateControlDto, UpdateControlDto } from "./controlsDto";
+import { normalizeControlCode, validateControlCodeForType } from "./iso27001-controls.validator";
+
+const prefixMap = {
+	ORGANIZATION: "A.5.",
+	PEOPLE: "A.6.",
+	PHYSICAL: "A.7.",
+	TECHNOLOGICAL: "A.8.",
+} as const;
 
 export class ControlsService {
-	constructor(private controlsRepository: ControlsRepository) {}
+	constructor(
+		private assessmentControlsRepository: AssessmentControlRepository,
+		private controlsRepository: ControlsRepository,
+		private suggestionRepository: SuggestionRepository,
+		private llmService: LlmService
+	) { }
 
 	async createControl(data: CreateControlDto) {
+		const assessmentControl = await this.assessmentControlsRepository.getById(data.assessmentControlId);
+		if (!assessmentControl) {
+			throw new AssessmentControlNotFoundError(data.assessmentControlId);
+		}
+		const expectedPrefix = prefixMap[assessmentControl.type];
+		const realCode = normalizeControlCode(data.code, expectedPrefix);
+		const item = validateControlCodeForType({
+			code: realCode,
+			assessmentType: assessmentControl.type,
+		});
+		data.code = item.code;
+		data.name = item.name;
+		data.guidance = item.guidance;
+		data.description = item.description;
 		return this.controlsRepository.create(data);
+	}
+
+	async suggestControl(id: number) {
+		const Control = await this.controlsRepository.getById(id);
+		if (!Control) {
+			throw new AssessmentControlNotFoundError(id);
+		}
+		const payload = {
+			"controlCode": Control.code,
+			"title": Control.name,
+			"description": Control.description,
+			"guidance": Control.guidance,
+			"status": Control.status,
+			"currentPractice": Control.currentPractice,
+			"userContext": Control.userContext,
+			"evidenceDescription": Control.evidenceDescription,
+		};
+		console.log("Before LLM Service Call:");
+		const res = await this.llmService.suggestWithLlm(payload);
+		console.log("After LLM Service Call:");
+		console.log(res);
+
+
+		console.log("------------------------------------------------");
+		let suggest = await this.suggestionRepository.getByControlId(id);
+		if (!suggest) {
+			suggest = await this.suggestionRepository.create({
+				controlId: id,
+				content: res.suggestion,
+			});
+			suggest = await this.suggestionRepository.update(suggest.id, {
+				content: res.suggestion,
+			});
+		}
+		return suggest;
+	}
+
+	async getControlByCodeIso(code: string, assessmentControlId: number) {
+		return this.controlsRepository.getByCodeIso(code, assessmentControlId);
 	}
 
 	async getControlById(id: number) {

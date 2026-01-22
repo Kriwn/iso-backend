@@ -1,10 +1,10 @@
-export interface createEvidenceDto {
+export interface CreateEvidenceDto {
 	fileName: string;
 	filePath: string;
 	controlId: number;
 }
 
-export interface updateEvidenceDto {
+export interface UpdateEvidenceDto {
 	fileName?: string;
 	filePath?: string;
 	controlId?: number;

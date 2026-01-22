@@ -11,3 +11,11 @@ export class ControlCodeAlreadyExistsError extends Error {
 		this.name = "ControlCodeAlreadyExistsError";
 	}
 }
+
+
+export class ControlCodeIdMismatchError extends Error {
+	constructor(code: string, id: number) {
+		super(`Control code ${code} does not found in AssessmentControl id ${id}`);
+		this.name = "ControlCodeIdMismatchError";
+	}
+}

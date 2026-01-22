@@ -1,9 +1,11 @@
 import Elysia, { t } from "elysia";
 import { CreateControlDto, UpdateControlDto } from "../services/controls/controlsDto";
 import { ControlsService } from "../services/controls/controlsService";
-import { ControlNotFoundError } from "../errors/controlsError";
+import { ControlCodeAlreadyExistsError, ControlCodeIdMismatchError, ControlNotFoundError } from "../errors/controlsError";
 
 import { control_status } from "../../generated/prisma/client";
+import { AssessmentControlNotFoundError } from "../errors/assessmentControlError";
+import { ControlTypeMismatchError, InvalidControlCodeError } from "../services/controls/iso27001-controls.validator";
 
 const ControlStatusEnum = {
   NOT_IMPLEMENTED: control_status.NOT_IMPLEMENTED,
@@ -21,11 +23,13 @@ export const controlsController = (controlsService: ControlsService) =>
 			async ({ body, set }) => {
 				try {
 					const dto: CreateControlDto = {
+						name: "",
+						guidance: "",
+						description: "",
 						code: body.code,
-						name: body.name,
+						userContext: body.userContext,
+						evidenceDescription: body.evidenceDescription,
 						currentPractice: body.currentPractice,
-						description: body.description,
-						guidance: body.guidance,
 						assessmentControlId: body.assessmentControlId,
 						status: body.status,
 					};
@@ -33,16 +37,34 @@ export const controlsController = (controlsService: ControlsService) =>
 					set.status = 201;
 					return control;
 				} catch (err) {
+					if (err instanceof AssessmentControlNotFoundError){
+						set.status = 404;
+						return { message: err.message };
+					}
+					if (err instanceof ControlTypeMismatchError)
+					{
+						set.status = 409;
+						return { message: err.message };
+					}
+					if (err instanceof InvalidControlCodeError)
+					{
+						set.status = 422;
+						return { message: err.message };
+
+					}
+					if (err instanceof ControlCodeAlreadyExistsError) {
+						set.status = 409;
+						return { message: err.message };
+					}
 					set.status = 500;
 					return { message: "Internal Server Error" };
 				}
 			},
 			{ body: t.Object({
 				code: t.String(),
-				name: t.String(),
 				currentPractice: t.String(),
-				description: t.String(),
-				guidance: t.String(),
+				userContext: t.Optional(t.String()),
+				evidenceDescription: t.Optional(t.String()),
 				assessmentControlId: t.Number(),
 				status: t.Enum(ControlStatusEnum),
 			},
@@ -81,17 +103,55 @@ export const controlsController = (controlsService: ControlsService) =>
 				}
 			}
 		)
+		.put(
+			"/",
+			async ({ body, set }) => {
+				try {
+					return await controlsService.getControlByCodeIso(body.code, body.assessmentControlId);
+				} catch (err) {
+					if (err instanceof ControlCodeIdMismatchError) {
+						set.status = 404;
+						return { message: err.message };
+					}
+					set.status = 500;
+					return { message: "Internal Server Error" };
+				}
+			},
+			{ body: t.Object({
+				code: t.String(),
+				assessmentControlId: t.Number(),
+			},
+				{ additionalProperties: false }
+			)
+			}
+		)
+		.put(
+			"/suggest/:id",
+			async ({ params, set }) => {
+				try {
+					return await controlsService.suggestControl(params.id);
+				} catch (err) {
+					if (err instanceof AssessmentControlNotFoundError) {
+						set.status = 404;
+						return { message: err.message };
+					}
+					set.status = 500;
+					return { message: "Internal Server Error" };
+				}
+			},
+			{
+				params: t.Object({ id: t.Number() }),
+			}
+		)
 		.patch(
 			"/:id",
 			async ({ params, body, set }) => {
 				try {
 					const dto: UpdateControlDto = {
-						code: body.code,
-						name: body.name,
 						currentPractice: body.currentPractice,
-						description: body.description,
-						guidance: body.guidance,
 						assessmentControlId: body.assessmentControlId,
+						userContext: body.userContext,
+						evidenceDescription: body.evidenceDescription,
 						status: body.status,
 					};
 					return await controlsService.updateControl(params.id, dto);
@@ -108,11 +168,9 @@ export const controlsController = (controlsService: ControlsService) =>
 				params: t.Object({ id: t.Number() }),
 				body: t.Object(
 					{
-						code: t.Optional(t.String()),
-						name: t.Optional(t.String()),
 						currentPractice: t.Optional(t.String()),
-						description: t.Optional(t.String()),
-						guidance: t.Optional(t.String()),
+						userContext: t.Optional(t.String()),
+						evidenceDescription: t.Optional(t.String()),
 						assessmentControlId: t.Optional(t.Number()),
 						status: t.Enum(ControlStatusEnum),
 					},

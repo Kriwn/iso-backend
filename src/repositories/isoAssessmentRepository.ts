@@ -1,7 +1,7 @@
 import { IsoAssessmentEntity } from "../entities/isoAssessmentEntity";
 import { CreateIsoAssessmentDto, UpdateIsoAssessmentDto } from "../services/isoAssessment/isoAssessmentDto";
 
-//TODO create summarize methods
+//TODO create summarize methods get 4 AssessmentControl.
 export interface IsoAssessmentRepository {
 
 	create(data: CreateIsoAssessmentDto): Promise<IsoAssessmentEntity>;

@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from "../../../../../generated/prisma/client";
-import { ControlEntity } from "../../../../entities/controlsEntity";
-import { ControlCodeAlreadyExistsError, ControlNotFoundError } from "../../../../errors/controlsError";
+import { ControlEntity, toControlEntity } from "../../../../entities/controlsEntity";
+import { ControlCodeAlreadyExistsError, ControlCodeIdMismatchError, ControlNotFoundError } from "../../../../errors/controlsError";
 import { ControlsRepository } from "../../../../repositories/controlsRepository";
 import { CreateControlDto } from "../../../../services/controls/controlsDto";
 
@@ -10,7 +10,7 @@ export class PrismaControlsRepository  implements ControlsRepository {
 	async create(data: CreateControlDto): Promise<ControlEntity> {
 		try {
 			const  res = await this.prisma.controls.create({ data });
-			return res as ControlEntity;
+			return toControlEntity(res);
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
 			{
@@ -27,12 +27,22 @@ export class PrismaControlsRepository  implements ControlsRepository {
 		if (!res) {
 			throw new ControlNotFoundError(id);
 		}
-		return res as ControlEntity | null;
+		return toControlEntity(res);
+	}
+
+	async getByCodeIso(code: string, assessmentControlId: number): Promise<ControlEntity | null> {
+		const res = await this.prisma.controls.findFirst({
+			where: { code, assessmentControlId },
+		});
+		if (!res) {
+			throw new ControlCodeIdMismatchError(code, assessmentControlId);
+		}
+		return toControlEntity(res);
 	}
 
 	async getAll(): Promise<ControlEntity[]> {
 		const res = await this.prisma.controls.findMany();
-		return res as ControlEntity[];
+		return res.map(toControlEntity);
 	}
 
 	async update(id: number, data: any): Promise<ControlEntity> {
@@ -41,7 +51,7 @@ export class PrismaControlsRepository  implements ControlsRepository {
 				where: { id },
 				data: data,
 			});
-			return res as ControlEntity;
+			return toControlEntity(res);
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
 				throw new ControlNotFoundError(id);

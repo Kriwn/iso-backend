@@ -6,6 +6,8 @@ export interface ControlEntity {
 	name: string;
 	currentPractice: string;
 	description: string;
+	userContext?: string | null;
+	evidenceDescription?: string | null;
 	guidance: string;
 	assessmentControlId: number;
 	status:	 control_status;
@@ -20,6 +22,8 @@ export function toControlEntity(data: Controls){
 		name: data.name,
 		currentPractice: data.currentPractice,
 		description: data.description,
+		userContext: data.userContext,
+		evidenceDescription: data.evidenceDescription,
 		guidance: data.guidance,
 		assessmentControlId: data.assessmentControlId,
 		status: data.status,

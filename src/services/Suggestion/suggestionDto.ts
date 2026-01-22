@@ -1,8 +1,8 @@
-export interface createSuggestionDto {
+export interface CreateSuggestionDto {
 	content: string;
 	controlId: number;
 }
 
-export interface updateSuggestionDto {
+export interface UpdateSuggestionDto {
 	content?: string;
 }
