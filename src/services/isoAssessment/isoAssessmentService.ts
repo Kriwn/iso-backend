@@ -17,7 +17,6 @@ export class IsoAssessmentService {
 		private assessmentControlRepository: AssessmentControlRepository
 	) { }
 
-	//TODO handle transaction error
 	async createIso(data: CreateIsoAssessmentDto) {
 		try {
 			return await this.prisma.$transaction(async (tx) => {
@@ -55,9 +54,6 @@ export class IsoAssessmentService {
 				return this.isoAssessmentRepository.update(id, data);
 			}
 
-	async updatePrivateIso(id: number, data: any) {
-				return this.isoAssessmentRepository.updatePrivate(id, data);
-			}
 
 	async deleteIso(id: number) {
 				return this.isoAssessmentRepository.delete(id);

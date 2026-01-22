@@ -13,11 +13,9 @@ import { companyController } from "./interfaces/companyController";
 import { PrismaIsoAssessmentRepository } from "./infrastructures/db/prisma/repositories/prismaIsoAssessmentRepository";
 import { IsoAssessmentService } from "./services/isoAssessment/isoAssessmentService";
 import { isoAssessmentController } from "./interfaces/isoAssessmentController";
-import { PrismaIsoAssessmentControlRepository } from "./infrastructures/db/prisma/repositories/prismaAssessmentControlRepository";
+import { PrismaAssessmentControlRepository } from "./infrastructures/db/prisma/repositories/prismaAssessmentControlRepository";
 import { PrismaControlsRepository } from "./infrastructures/db/prisma/repositories/prismaControlsRepository";
-import { AssessmentControlService } from "./services/assessmentControl/assessmentControlService";
 import { ControlsService } from "./services/controls/controlsService";
-import { assessmentControlController } from "./interfaces/assessmentControlController";
 import { controlsController } from "./interfaces/controlsController";
 import { evidenceController } from "./interfaces/evidenceController";
 import { EvidenceService } from "./services/evidence/evidenceService";
@@ -25,6 +23,8 @@ import { PrismaEvidenceRepository } from "./infrastructures/db/prisma/repositori
 import { PrismaSuggestionRepository } from "./infrastructures/db/prisma/repositories/prismaSuggestionRepository";
 import { suggestionController } from "./interfaces/suggestionController";
 import { SuggestionService } from "./services/suggestion/suggestionService";
+import { AssessmentControlService } from "./services/assessmentControl/assessmentControlService";
+import { assessmentControlController } from "./interfaces/AssessmentControlController";
 
 const app = new Elysia({
   // normalize: false,
@@ -41,7 +41,7 @@ const userRepo = new PrismaUserRepository(prisma);
 const userService = new UserService(userRepo);
 const companyRepo = new PrismaCompanyRepository(prisma);
 const companyService = new CompanyService(companyRepo);
-const assessmentControlRepo = new PrismaIsoAssessmentControlRepository(prisma);
+const assessmentControlRepo = new PrismaAssessmentControlRepository(prisma);
 const assessmentControlService = new AssessmentControlService(assessmentControlRepo);
 const isoAssessmentRepo = new PrismaIsoAssessmentRepository(prisma);
 const isoAssessmentService = new IsoAssessmentService(prisma,isoAssessmentRepo,assessmentControlRepo);

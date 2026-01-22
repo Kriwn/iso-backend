@@ -10,7 +10,7 @@ export class PrismaUserRepository implements UserRepository {
 
 	async create(data: CreateUserDto): Promise<UserEntity> {
 		try {
-			const res = await this.prisma.user.create({ data });
+				const res = await this.prisma.user.create({ data });
 			return toUserEntity(res);
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {

@@ -1,5 +1,5 @@
 import { Param } from "@prisma/client/runtime/client";
-import { IsoAssessmentNotFoundError } from "../errors/isoAssessmentError";
+import { IsoAssessmentNotFoundError, IsoAssessmentYearAlreadyExistsError } from "../errors/isoAssessmentError";
 import { CreateIsoAssessmentDto } from "../services/isoAssessment/isoAssessmentDto";
 import Elysia, { t } from "elysia";
 import { IsoAssessmentService } from "../services/isoAssessment/isoAssessmentService";
@@ -29,8 +29,12 @@ export const isoAssessmentController =(isoAssessmentService: IsoAssessmentServic
 					set.status = 201;
 					return isoAssessment;
 				} catch (err) {
+					if (err instanceof IsoAssessmentYearAlreadyExistsError) {
+						set.status = 409;
+						return { message: err.message };
+					}
 					set.status = 500;
-					return { message: "Internal Server Error" };
+					return { message: "Internal Server Error"};
 				}
 			},
 			{

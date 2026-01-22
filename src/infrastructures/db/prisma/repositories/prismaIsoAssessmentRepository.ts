@@ -1,8 +1,8 @@
 import { Prisma, PrismaClient } from "../../../../../generated/prisma/client";
 import { IsoAssessmentEntity, toIsoAssessmentEntity } from "../../../../entities/isoAssessmentEntity";
-import { IsoAssessmentNotFoundError } from "../../../../errors/isoAssessmentError";
+import { IsoAssessmentNotFoundError, IsoAssessmentYearAlreadyExistsError } from "../../../../errors/isoAssessmentError";
 import { IsoAssessmentRepository } from "../../../../repositories/isoAssessmentRepository";
-import { CreateIsoAssessmentDto, UpdateIsoAssessmentDto, UpdatePrivateIsoAssessmentDto } from "../../../../services/isoAssessment/isoAssessmentDto";
+import { CreateIsoAssessmentDto, UpdateIsoAssessmentDto} from "../../../../services/isoAssessment/isoAssessmentDto";
 
 export class PrismaIsoAssessmentRepository implements IsoAssessmentRepository {
 
@@ -18,8 +18,17 @@ export class PrismaIsoAssessmentRepository implements IsoAssessmentRepository {
 	}
 
 	async createWithTx(tx: Prisma.TransactionClient, data: CreateIsoAssessmentDto): Promise<IsoAssessmentEntity> {
-		const res = await tx.isoAssessment.create({ data });
-		return toIsoAssessmentEntity(res);
+		try {
+			const res = await tx.isoAssessment.create({ data });
+			return toIsoAssessmentEntity(res);
+		}
+		catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
+			{
+				throw new IsoAssessmentYearAlreadyExistsError(data.year);
+			}
+			throw error;
+		}
 	}
 
 	async getAll(): Promise<IsoAssessmentEntity[]> {
@@ -45,21 +54,6 @@ export class PrismaIsoAssessmentRepository implements IsoAssessmentRepository {
 	}
 
 	async update(id: number, data: UpdateIsoAssessmentDto): Promise<IsoAssessmentEntity> {
-		try {
-			const res = await this.prisma.isoAssessment.update({
-				where: { id },
-				data: data,
-			});
-			return toIsoAssessmentEntity(res);
-		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
-				throw new IsoAssessmentNotFoundError(id);
-			}
-			throw error;
-		}
-	}
-
-	async updatePrivate(id: number, data: UpdatePrivateIsoAssessmentDto): Promise<IsoAssessmentEntity> {
 		try {
 			const res = await this.prisma.isoAssessment.update({
 				where: { id },

@@ -6,6 +6,7 @@ export interface UserEntity {
 	email: string;
 	firstName: string;
 	lastName: string;
+	companyId?: number | null;
 	role: userRole;
 	image?: string | null;
 	createdAt: Date;
@@ -24,6 +25,7 @@ export function toUserEntity(user: User): UserEntity {
 		email: user.email,
 		firstName: user.firstName,
 		lastName: user.lastName,
+		companyId: user.companyId ?? null,
 		role: user.role,
 		image: user.image,
 		createdAt: user.createdAt,

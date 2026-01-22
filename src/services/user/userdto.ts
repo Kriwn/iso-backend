@@ -4,14 +4,15 @@ export interface CreateUserDto {
 	email: string;
 	firstName: string;
 	lastName: string;
+	companyId?: number;
 	role: userRole;
 	image?: string | null;
 }
 
-//TODO need to add companyId later
 export interface UpdateUserDto {
 	firstName?: string;
 	lastName?: string;
+	companyId?: number;
 	image?: string;
 	role?: userRole;
 }

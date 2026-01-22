@@ -87,6 +87,7 @@ export const userController = (userService: UserService) =>
 					const dto: UpdateUserDto = {
 						firstName: body.firstName,
 						lastName: body.lastName,
+						companyId: body.companyId,
 						role: body.role,
 						image: body.image,
 					};
@@ -109,6 +110,7 @@ export const userController = (userService: UserService) =>
 					firstName: t.Optional(t.String()),
 					lastName: t.Optional(t.String()),
 					role: t.Optional(t.Enum(UserRoleEnum)),
+					companyId: t.Optional(t.Number()),
 					image: t.Optional(t.String({ format: "uri" })),
 
 				},

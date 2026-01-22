@@ -11,11 +11,3 @@ export interface UpdateIsoAssessmentDto {
 	year?: number;
 	status?: iso_status;
 }
-
-
-export interface UpdatePrivateIsoAssessmentDto {
-	name?: string;
-	year?: number;
-	companyId?: number;
-	status?: iso_status;
-}

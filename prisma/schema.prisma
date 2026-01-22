@@ -37,7 +37,7 @@ model Evidence {
 
 model Controls {
   id                  Int               @id @default(autoincrement()) @db.Integer
-  code                String            @db.VarChar(20) @unique
+  code                String            @db.VarChar(20)
   name                String            @db.VarChar(255)
   currentPractice     String            @db.Text
   description         String            @db.Text
@@ -47,6 +47,8 @@ model Controls {
   assessmentControl   AssessmentControl @relation(fields: [assessmentControlId], references: [id], onDelete: Cascade)
   evidences           Evidence[]
   suggestions        Suggestion?
+
+  @@unique([assessmentControlId, code])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -83,13 +85,15 @@ enum controls_type {
 model IsoAssessment {
   id     Int        @id @default(autoincrement()) @db.Integer
   name   String     @db.VarChar(255)
-  year   Int        @db.Integer @unique
+  year   Int        @db.Integer
   status iso_status @default(DRAFT)
 
   companyId Int     @db.Integer
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   assessmentControls AssessmentControl[]
+
+  @@unique([companyId, year])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -103,7 +107,7 @@ enum iso_status {
 
 model Company {
   id             Int             @id @default(autoincrement()) @db.Integer
-  code           String          @unique @db.VarChar(20) // business identifier
+  code           String          @unique @db.VarChar(20)
   name           String          @db.VarChar(100)
   details        String?         @db.VarChar(255)
   image          String?         @db.Text
@@ -126,8 +130,8 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  company_id Int?     @db.Integer
-  company    Company? @relation(fields: [company_id], references: [id], onDelete: SetNull)
+  companyId Int?     @db.Integer
+  company    Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
 
   @@unique([email])
   @@map("user")
@@ -159,7 +163,7 @@ model Account {
   id                    String    @id
   accountId             String
   providerId            String
-  userId                String
+  userId                String    @db.Uuid
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?

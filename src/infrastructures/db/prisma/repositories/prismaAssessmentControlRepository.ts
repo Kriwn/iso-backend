@@ -4,7 +4,7 @@ import { AssessmentControlNotFoundError } from "../../../../errors/assessmentCon
 import { AssessmentControlRepository } from "../../../../repositories/assessmentControlRepository";
 import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "../../../../services/assessmentControl/assessmentControlDto";
 
-export class PrismaIsoAssessmentControlRepository implements AssessmentControlRepository {
+export class PrismaAssessmentControlRepository implements AssessmentControlRepository {
 	constructor(private prisma: PrismaClient) {}
 
 	async create(data: CreateAssessmentControlDto): Promise<AssessmentControlEntity> {
@@ -51,6 +51,10 @@ export class PrismaIsoAssessmentControlRepository implements AssessmentControlRe
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
 				throw new AssessmentControlNotFoundError(id);
 			}
+			if (error instanceof Prisma.PrismaClientKnownRequestError) {
+				console.log(error.code);
+			}
+
 			throw error;
 		}
 	}

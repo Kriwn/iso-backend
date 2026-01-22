@@ -1,7 +1,6 @@
 import { AssessmentControlRepository } from "../../repositories/assessmentControlRepository";
 import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "./assessmentControlDto";
 
-//TODO hangle update wrong company id
 export class AssessmentControlService {
 	constructor(private assessmentControlRepository: AssessmentControlRepository) {}
 

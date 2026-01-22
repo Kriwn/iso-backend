@@ -1,6 +1,6 @@
 import Elysia, { t } from "elysia";
 import { CompanyService } from "../services/company/companyService";
-import { CompanyCodeAlreadyExistsError, CompanyNotFoundError } from "../errors/companyError";
+import { CompanyCodeAlreadyExistsError, CompanyCodeNotFoundError, CompanyNotFoundError } from "../errors/companyError";
 import { CreateCompanyDto, UpdateCompanyDto, UpdatePrivateCompanyDto } from "../services/company/companyDto";
 
 //TODO in getByCode need to add code dont found
@@ -152,7 +152,7 @@ export const companyController= (companyService: CompanyService) =>
 				try {
 					return await companyService.getCompanyByCode(params.code);
 				} catch (err) {
-					if (err instanceof CompanyNotFoundError) {
+					if (err instanceof CompanyCodeNotFoundError) {
 					set.status = 404;
 					return { message: err.message };
 					}

@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from "../../../../../generated/prisma/client";
 import { ControlEntity } from "../../../../entities/controlsEntity";
-import { ControlNotFoundError } from "../../../../errors/controlsError";
+import { ControlCodeAlreadyExistsError, ControlNotFoundError } from "../../../../errors/controlsError";
 import { ControlsRepository } from "../../../../repositories/controlsRepository";
 import { CreateControlDto } from "../../../../services/controls/controlsDto";
 
@@ -12,6 +12,10 @@ export class PrismaControlsRepository  implements ControlsRepository {
 			const  res = await this.prisma.controls.create({ data });
 			return res as ControlEntity;
 		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
+			{
+				throw new ControlCodeAlreadyExistsError(data.code, data.assessmentControlId);
+			}
 			throw error;
 		}
 	}
