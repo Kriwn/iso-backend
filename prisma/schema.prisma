@@ -61,11 +61,9 @@ enum control_status {
 }
 
 model AssessmentControl {
-  id       Int           @id @default(autoincrement()) @db.Integer
-  count    Int           @db.Integer @default(0)
-  maxCount Int           @db.Integer
-  context  String        @db.VarChar(255)
-  type     controls_type @default(ORGANIZATION)
+  id          Int           @id @default(autoincrement()) @db.Integer
+  description  String        @db.VarChar(255)
+  type          controls_type @default(ORGANIZATION)
 
   isoAssessmentId Int           @db.Integer
   isoAssessment   IsoAssessment @relation(fields: [isoAssessmentId], references: [id], onDelete: Cascade)
