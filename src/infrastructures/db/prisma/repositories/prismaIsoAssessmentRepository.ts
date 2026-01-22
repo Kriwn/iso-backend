@@ -1,5 +1,6 @@
 import { Prisma, PrismaClient } from "../../../../../generated/prisma/client";
 import { IsoAssessmentEntity, toIsoAssessmentEntity } from "../../../../entities/isoAssessmentEntity";
+import { CompanyNotFoundError } from "../../../../errors/companyError";
 import { IsoAssessmentNotFoundError, IsoAssessmentYearAlreadyExistsError } from "../../../../errors/isoAssessmentError";
 import { IsoAssessmentRepository } from "../../../../repositories/isoAssessmentRepository";
 import { CreateIsoAssessmentDto, UpdateIsoAssessmentDto} from "../../../../services/isoAssessment/isoAssessmentDto";
@@ -26,6 +27,10 @@ export class PrismaIsoAssessmentRepository implements IsoAssessmentRepository {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
 			{
 				throw new IsoAssessmentYearAlreadyExistsError(data.year);
+			}
+			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2003')
+			{
+				throw new CompanyNotFoundError(data.companyId);
 			}
 			throw error;
 		}

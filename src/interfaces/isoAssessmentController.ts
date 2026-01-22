@@ -4,6 +4,7 @@ import { CreateIsoAssessmentDto } from "../services/isoAssessment/isoAssessmentD
 import Elysia, { t } from "elysia";
 import { IsoAssessmentService } from "../services/isoAssessment/isoAssessmentService";
 import { iso_status } from "../../generated/prisma/enums";
+import { CompanyNotFoundError } from "../errors/companyError";
 
 const IsoAssessmentStatusEnum = {
   	DRAFT: iso_status.DRAFT,
@@ -31,6 +32,10 @@ export const isoAssessmentController =(isoAssessmentService: IsoAssessmentServic
 				} catch (err) {
 					if (err instanceof IsoAssessmentYearAlreadyExistsError) {
 						set.status = 409;
+						return { message: err.message };
+					}
+					if (err instanceof CompanyNotFoundError) {
+						set.status = 404;
 						return { message: err.message };
 					}
 					set.status = 500;
