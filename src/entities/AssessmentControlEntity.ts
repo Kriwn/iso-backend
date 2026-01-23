@@ -3,7 +3,7 @@ import { AssessmentControl, Controls, controls_type } from "../../generated/pris
 
 export interface AssessmentControlEntity {
 	id: number;
-	assessmentId: number;
+	isoAssessmentId: number;
 	description: string;
 	type: controls_type;
 	createdAt: Date;
@@ -13,7 +13,7 @@ export interface AssessmentControlEntity {
 export function toAssessmentControlEntity(data: AssessmentControl): AssessmentControlEntity {
 	return {
 		id: data.id,
-		assessmentId: data.isoAssessmentId,
+		isoAssessmentId: data.isoAssessmentId,
 		description: data.description,
 		type: data.type,
 		createdAt: data.createdAt,
