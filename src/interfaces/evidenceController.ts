@@ -1,6 +1,6 @@
 import Elysia, { t } from "elysia";
 import { EvidenceAlreadyExistsError, EvidenceNotFoundError } from "../errors/evidenceError";
-import { createEvidenceDto } from "../services/evidence/evidenceDto";
+import { CreateEvidenceDto } from "../services/evidence/evidenceDto";
 import { EvidenceService } from "../services/evidence/evidenceService";
 
 export const evidenceController = (evidenceService: EvidenceService) =>
@@ -9,7 +9,7 @@ export const evidenceController = (evidenceService: EvidenceService) =>
 			"/",
 			async ({body, set}) => {
 				try {
-					const dto: createEvidenceDto = {
+					const dto: CreateEvidenceDto = {
 						fileName: body.fileName,
 						filePath: body.filePath,
 						controlId: body.controlId,

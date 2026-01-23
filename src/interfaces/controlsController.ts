@@ -8,13 +8,13 @@ import { AssessmentControlNotFoundError } from "../errors/assessmentControlError
 import { ControlTypeMismatchError, InvalidControlCodeError } from "../services/controls/iso27001-controls.validator";
 
 const ControlStatusEnum = {
-  NOT_IMPLEMENTED: control_status.NOT_IMPLEMENTED,
-  PARTIALLY_IMPLEMENTED: control_status.PARTIALLY,
-  IMPLEMENTED: control_status.IMPLEMENTED,
+	NOT_IMPLEMENTED: control_status.NOT_IMPLEMENTED,
+	PARTIALLY_IMPLEMENTED: control_status.PARTIALLY,
+	IMPLEMENTED: control_status.IMPLEMENTED,
 } as const;
 
 type ControlStatus =
-  (typeof ControlStatusEnum)[keyof typeof ControlStatusEnum];
+	(typeof ControlStatusEnum)[keyof typeof ControlStatusEnum];
 
 export const controlsController = (controlsService: ControlsService) =>
 	new Elysia({ prefix: "/api/controls", tags: ["Controls"] })
@@ -37,17 +37,15 @@ export const controlsController = (controlsService: ControlsService) =>
 					set.status = 201;
 					return control;
 				} catch (err) {
-					if (err instanceof AssessmentControlNotFoundError){
+					if (err instanceof AssessmentControlNotFoundError) {
 						set.status = 404;
 						return { message: err.message };
 					}
-					if (err instanceof ControlTypeMismatchError)
-					{
+					if (err instanceof ControlTypeMismatchError) {
 						set.status = 409;
 						return { message: err.message };
 					}
-					if (err instanceof InvalidControlCodeError)
-					{
+					if (err instanceof InvalidControlCodeError) {
 						set.status = 422;
 						return { message: err.message };
 
@@ -60,16 +58,18 @@ export const controlsController = (controlsService: ControlsService) =>
 					return { message: "Internal Server Error" };
 				}
 			},
-			{ body: t.Object({
-				code: t.String(),
-				currentPractice: t.String(),
-				userContext: t.Optional(t.String()),
-				evidenceDescription: t.Optional(t.String()),
-				assessmentControlId: t.Number(),
-				status: t.Enum(ControlStatusEnum),
-			},
-				{ additionalProperties: false }
-		)
+			{
+				detail: {summary : "Create controls" },
+				body: t.Object({
+					code: t.String(),
+					currentPractice: t.String(),
+					userContext: t.Optional(t.String()),
+					evidenceDescription: t.Optional(t.String()),
+					assessmentControlId: t.Number(),
+					status: t.Enum(ControlStatusEnum),
+				},
+					{ additionalProperties: false }
+				)
 			}
 		)
 		.get(
@@ -87,6 +87,7 @@ export const controlsController = (controlsService: ControlsService) =>
 				}
 			},
 			{
+				detail: { summary: "Get control by ID" },
 				params: t.Object({
 					id: t.Number(),
 				}),
@@ -101,6 +102,9 @@ export const controlsController = (controlsService: ControlsService) =>
 					set.status = 500;
 					return { message: "Internal Server Error" };
 				}
+			},
+			{
+				detail: { summary: "Get all controls" },
 			}
 		)
 		.put(
@@ -117,12 +121,14 @@ export const controlsController = (controlsService: ControlsService) =>
 					return { message: "Internal Server Error" };
 				}
 			},
-			{ body: t.Object({
-				code: t.String(),
-				assessmentControlId: t.Number(),
-			},
-				{ additionalProperties: false }
-			)
+			{
+				detail: { summary: "Get control by code and assessmentControlId" },
+				body: t.Object({
+					code: t.String(),
+					assessmentControlId: t.Number(),
+				},
+					{ additionalProperties: false }
+				)
 			}
 		)
 		.put(
@@ -140,6 +146,7 @@ export const controlsController = (controlsService: ControlsService) =>
 				}
 			},
 			{
+				detail: { summary: "LLM Suggest control by ID" },
 				params: t.Object({ id: t.Number() }),
 			}
 		)
@@ -165,6 +172,7 @@ export const controlsController = (controlsService: ControlsService) =>
 				}
 			},
 			{
+				detail: { summary: "Update control by ID" },
 				params: t.Object({ id: t.Number() }),
 				body: t.Object(
 					{
@@ -195,6 +203,7 @@ export const controlsController = (controlsService: ControlsService) =>
 				}
 			},
 			{
+				detail: { summary: "Delete control by ID" },
 				params: t.Object({ id: t.Number() }),
 			}
 		);
