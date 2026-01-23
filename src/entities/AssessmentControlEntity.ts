@@ -1,4 +1,4 @@
-import { AssessmentControl, controls_type } from "../../generated/prisma/client";
+import { AssessmentControl, Controls, controls_type } from "../../generated/prisma/client";
 
 
 export interface AssessmentControlEntity {
@@ -9,7 +9,6 @@ export interface AssessmentControlEntity {
 	createdAt: Date;
 	updatedAt: Date;
 }
-
 
 export function toAssessmentControlEntity(data: AssessmentControl): AssessmentControlEntity {
 	return {

@@ -51,10 +51,6 @@ export class PrismaAssessmentControlRepository implements AssessmentControlRepos
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
 				throw new AssessmentControlNotFoundError(id);
 			}
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				console.log(error.code);
-			}
-
 			throw error;
 		}
 	}

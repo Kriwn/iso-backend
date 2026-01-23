@@ -1,4 +1,5 @@
 import { PrismaClient } from "../../../generated/prisma/client";
+import { IsoAssessmentNotFoundError } from "../../errors/isoAssessmentError";
 import { AssessmentControlRepository } from "../../repositories/assessmentControlRepository";
 import { IsoAssessmentRepository } from "../../repositories/isoAssessmentRepository";
 import { CreateAssessmentControlDto, createAssessmentControlDto } from "../assessmentControl/assessmentControlDto";
@@ -55,6 +56,15 @@ export class IsoAssessmentService {
 		}
 	}
 
+	async summarizeIsoControls(id: number) {
+		const res = await this.isoAssessmentRepository.getById(id);
+		if (!res)
+		{
+			throw new IsoAssessmentNotFoundError(id);
+		}
+		const data = await this.isoAssessmentRepository.summary(id);
+		return data;
+	}
 
 	async getIsoById(id: number) {
 		return this.isoAssessmentRepository.getById(id);

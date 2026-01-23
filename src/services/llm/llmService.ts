@@ -14,9 +14,6 @@ export class LlmService {
   async suggestWithLlm(
     payload: LlmSuggestRequest
   ): Promise<any> {
-  console.log("this.env.POST_LLM_PATH:", this.env.POST_LLM_PATH);
-  console.log("this.env.POST_LLM_KEY:", this.env.LLM_API_KEY);
-  console.log("Payload sent to LLM Service:", payload);
   const res = await fetch(this.env.POST_LLM_PATH, {
     method: "POST",
     headers: {

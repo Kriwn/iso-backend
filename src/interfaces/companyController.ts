@@ -3,7 +3,6 @@ import { CompanyService } from "../services/company/companyService";
 import { CompanyCodeAlreadyExistsError, CompanyCodeNotFoundError, CompanyNotFoundError } from "../errors/companyError";
 import { CreateCompanyDto, UpdateCompanyDto, UpdatePrivateCompanyDto } from "../services/company/companyDto";
 
-//TODO in getByCode need to add code dont found
 export const companyController= (companyService: CompanyService) =>
 	new Elysia({ prefix: "/api/companies", tags: ["Company"] })
 		.post(

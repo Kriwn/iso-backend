@@ -1,5 +1,3 @@
-// src/domain/iso27001/iso27001-controls.catalog.ts
-
 import { controls_type } from "../../../generated/prisma/client";
 
 export type IsoControlCatalogItem = {

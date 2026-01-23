@@ -1,4 +1,4 @@
-import { iso_status, IsoAssessment } from "../../generated/prisma/client";
+import { control_status, controls_type, iso_status, IsoAssessment } from "../../generated/prisma/client";
 
 export interface IsoAssessmentEntity {
 	id: number;
@@ -9,6 +9,13 @@ export interface IsoAssessmentEntity {
 	createdAt: Date;
 	updatedAt: Date;
 }
+
+export interface SummaryRow {
+  type: controls_type;
+  status: control_status;
+  count: number;
+};
+
 
 export function toIsoAssessmentEntity(isoAssessment: IsoAssessment): IsoAssessmentEntity {
 	return {

@@ -1,5 +1,3 @@
-// src/domain/iso27001/iso27001-controls.validator.ts
-
 import { controls_type } from "../../../generated/prisma/client";
 import { ISO27001_CONTROL_BY_CODE } from "./iso27001-controls.catalog";
 

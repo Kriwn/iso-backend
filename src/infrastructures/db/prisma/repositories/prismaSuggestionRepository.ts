@@ -12,10 +12,6 @@ export class PrismaSuggestionRepository implements SuggestionRepository {
 			return toSuggestionEntity(suggestion);
 		}
 		catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				console.log(error.code);
-				throw error;
-			}
 			throw error;
 		}
 	}
@@ -29,9 +25,6 @@ export class PrismaSuggestionRepository implements SuggestionRepository {
 			return toSuggestionEntity(suggestion);
 		}
 		catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				console.log(error.code);
-			}
 			throw new Error("Error updating suggestion: " + error);
 		}
 	}

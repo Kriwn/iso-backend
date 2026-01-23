@@ -107,6 +107,28 @@ export const isoAssessmentController =(isoAssessmentService: IsoAssessmentServic
 				}),
 			}
 		)
+		.get(
+			"summary/:id",
+			async ({ params, set }) => {
+				try {
+					return await isoAssessmentService.summarizeIsoControls(params.id);
+				} catch (err) {
+					if (err instanceof IsoAssessmentNotFoundError) {
+						set.status = 404;
+						return { message: err.message };
+					} else {
+						set.status = 500;
+						return { message: "Internal Server Error" };
+					}
+				}
+			},
+			{
+				detail: { summary: "Summarize ISO Assessment Controls" },
+				params: t.Object({
+					id: t.Number(),
+				}),
+			}
+		)
 		.patch(
 			"/:id",
 			async ({ params, body, set }) => {
