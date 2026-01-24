@@ -2,6 +2,7 @@ import cors from "@elysiajs/cors";
 import swagger from "@elysiajs/swagger";
 import { Elysia, t } from "elysia";
 import { loadEnv, initLogger, logger } from "./config";
+import "./bootstarp";
 import { getPrismaClient, PrismaUserRepository, PrismaCompanyRepository, PrismaAssessmentControlRepository, PrismaIsoAssessmentRepository, PrismaEvidenceRepository, PrismaSuggestionRepository, PrismaControlsRepository } from "./infrastructures";
 import { userController, companyController, isoAssessmentController, assessmentControlController, controlsController, evidenceController, suggestionController } from "./interfaces";
 import { AssessmentControlService, LlmService, EvidenceService, SuggestionService, ControlsService } from "./services";
@@ -12,7 +13,6 @@ import { getAuth } from "./utils/auth";
 
 
 const app = new Elysia({
-  // normalize: false,
   aot: true,
 });
 
