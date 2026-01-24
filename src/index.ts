@@ -3,6 +3,7 @@ import { Elysia, t } from "elysia";
 import { initLogger, logger } from "./config/logger";
 import { loadEnv } from "./config/env";
 import { getPrismaClient } from "./infrastructures/db/prisma/client";
+import { getAuth } from "./utils/auth";
 import { PrismaUserRepository } from "./infrastructures/db/prisma/repositories/prismaUserRepository";
 import { UserService } from "./services/user/userService";
 import swagger from "@elysiajs/swagger";
@@ -38,8 +39,10 @@ logger.info("Init Env");
 const prisma = getPrismaClient();
 
 
+const auth = getAuth(prisma);
+
 const userRepo = new PrismaUserRepository(prisma);
-const userService = new UserService(userRepo);
+const userService = new UserService(userRepo, prisma);
 const companyRepo = new PrismaCompanyRepository(prisma);
 const companyService = new CompanyService(companyRepo);
 const assessmentControlRepo = new PrismaAssessmentControlRepository(prisma);
@@ -54,6 +57,11 @@ const suggestionService = new SuggestionService(suggestionRepo);
 const controlRepo = new PrismaControlsRepository(prisma);
 const controlService = new ControlsService(assessmentControlRepo, controlRepo,suggestionRepo,llmService);
 
+
+// Better Auth route handler
+app.all("/api/auth/*", async ({ request }) => {
+  return auth.handler(request);
+});
 
 app.use(swagger({ path: "/docs" }))
   .use(userController(userService))

@@ -1,12 +1,34 @@
+ import { getPrismaClient } from "../../infrastructures/db/prisma/client";
 import { UserRepository } from "../../repositories/userRepository";
-import { CreateUserDto, UpdateUserDto } from "./userDto";
-
+import { getAuth } from "../../utils/auth";
+import { CreateUserDto, UpdateUserDto } from "./userDto"
 
 export class UserService {
-	constructor(private userRepository: UserRepository) {}
+	private prisma;
+	private auth;
+
+	constructor(
+		private userRepository: UserRepository,
+		prisma = getPrismaClient()
+	) {
+		this.prisma = prisma;
+		this.auth = getAuth(this.prisma);
+	}
 
 	async registerUser(data: CreateUserDto) {
 		return this.userRepository.create(data);
+	}
+
+	async signInEmail(data: { email: string; password: string }) {
+		const response = await this.auth.api.signInEmail({
+			body: {
+				email: data.email,
+				password: data.password
+			},
+			asResponse: true // returns a response object instead of data
+		});
+
+		return response
 	}
 
 	async updateUser(id: string, data: UpdateUserDto) {
