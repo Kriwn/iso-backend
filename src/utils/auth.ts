@@ -9,6 +9,7 @@ export function getAuth(prisma: any) {
         emailAndPassword: {
             enabled: true,
         },
+        trustedOrigins: process.env.BETTER_AUTH_CORS ? process.env.BETTER_AUTH_CORS.split(",") : [],
         user: {
             modelName: "user",
             fields: {
