@@ -28,7 +28,6 @@ import { SuggestionService } from "./services/suggestion/suggestionService";
 import { AssessmentControlService } from "./services/assessmentControl/assessmentControlService";
 import { LlmService } from "./services/llm/llmService";
 
-
 const app = new Elysia({
   // normalize: false,
   aot: true,
