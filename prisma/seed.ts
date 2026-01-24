@@ -115,28 +115,6 @@ async function main() {
     },
   });
 
-  // (optional) Users
-  await prisma.user.createMany({
-    data: [
-      {
-        firstName: "Kriwn",
-        lastName: "Wongwandee",
-        email: "kriwn.alpha@example.com",
-        role: userRole.ADMIN,
-        emailVerified: true,
-        companyId: companyA.id,
-      },
-      {
-        firstName: "Jane",
-        lastName: "Doe",
-        email: "jane.beta@example.com",
-        role: userRole.INTERNAL_EXPERT,
-        emailVerified: true,
-        companyId: companyB.id,
-      },
-    ],
-  });
-
   // =========================
   // Company A: 2 ISO assessments
   // =========================
