@@ -16,7 +16,6 @@ import { IsoAssessmentService } from "./services/isoAssessment/isoAssessmentServ
 import { isoAssessmentController } from "./interfaces/isoAssessmentController";
 import { PrismaAssessmentControlRepository } from "./infrastructures/db/prisma/repositories/prismaAssessmentControlRepository";
 import { PrismaControlsRepository } from "./infrastructures/db/prisma/repositories/prismaControlsRepository";
-import { ControlsService } from "./services/controls/controlsService";
 import { controlsController } from "./interfaces/controlsController";
 import { evidenceController } from "./interfaces/evidenceController";
 import { EvidenceService } from "./services/evidence/evidenceService";
@@ -27,6 +26,8 @@ import { SuggestionService } from "./services/suggestion/suggestionService";
 import { AssessmentControlService } from "./services/assessmentControl/assessmentControlService";
 import { assessmentControlController } from "./interfaces/AssessmentControlController";
 import { LlmService } from "./services/llm/llmService";
+import { ControlsService } from "./services/controls/controlsService";
+
 
 const app = new Elysia({
   // normalize: false,

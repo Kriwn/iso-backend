@@ -1,10 +1,10 @@
 import { EvidenceRepository } from "../../repositories/evidenceRepository";
-import { createEvidenceDto, updateEvidenceDto } from "./evidenceDto";
+import { CreateEvidenceDto, UpdateEvidenceDto } from "./evidenceDto";
 
 export class EvidenceService {
 	constructor(private evidenceRepository: EvidenceRepository) {}
 
-	async createEvidence(data: createEvidenceDto) {
+	async createEvidence(data: CreateEvidenceDto) {
 		return this.evidenceRepository.create(data);
 	}
 
@@ -20,7 +20,7 @@ export class EvidenceService {
 		return this.evidenceRepository.getAllByControlId(controlId);
 	}
 
-	async updateEvidence(id: number, data: updateEvidenceDto) {
+	async updateEvidence(id: number, data: UpdateEvidenceDto) {
 		return this.evidenceRepository.update(id, data);
 	}
 
