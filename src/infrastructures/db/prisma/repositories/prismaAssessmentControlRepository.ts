@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from "../../../../../generated/prisma/client";
-import { AssessmentControlEntity, toAssessmentControlEntity } from "../../../../entities/AssessmentControlEntity";
+import { AssessmentControlEntity, toAssessmentControlEntity } from "../../../../entities/assessmentControlEntity";
 import { AssessmentControlNotFoundError } from "../../../../errors/assessmentControlError";
 import { AssessmentControlRepository } from "../../../../repositories/assessmentControlRepository";
 import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "../../../../services/assessmentControl/assessmentControlDto";

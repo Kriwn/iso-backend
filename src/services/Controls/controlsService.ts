@@ -57,7 +57,7 @@ export class ControlsService {
 		};
 		const res = await this.llmService.suggestWithLlm(payload);
 
-		if (!res.ok) {
+		if (res.success === false) {
 			throw new LLMServiceError(id);
 		}
 
@@ -65,12 +65,15 @@ export class ControlsService {
 		if (!suggest) {
 			suggest = await this.suggestionRepository.create({
 				controlId: id,
-				content: res.aiSuggestion,
-			});
-			suggest = await this.suggestionRepository.update(suggest.id, {
-				content: res.aiSuggestion,
+				content: res.data.aiSuggestion,
 			});
 		}
+		else {
+			suggest = await this.suggestionRepository.update(suggest.id, {
+				content: res.data.aiSuggestion,
+			});
+		}
+
 		return suggest;
 	}
 

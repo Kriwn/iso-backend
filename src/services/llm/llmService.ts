@@ -8,12 +8,19 @@ export class LLMServiceError extends Error {
   }
 }
 
+interface LlmSuggestResponse {
+  success: boolean;
+  data: {
+    aiSuggestion: string;
+  };
+}
+
 export class LlmService {
   constructor(private env: Env) {}
 
   async suggestWithLlm(
     payload: LlmSuggestRequest
-  ): Promise<any> {
+  ): Promise<LlmSuggestResponse> {
   const res = await fetch(this.env.POST_LLM_PATH, {
     method: "POST",
     headers: {
@@ -23,7 +30,7 @@ export class LlmService {
     body: JSON.stringify(payload),
   });
 
-  const data = await res.json();
+  const data: LlmSuggestResponse = await res.json();
 
   return data;
 }

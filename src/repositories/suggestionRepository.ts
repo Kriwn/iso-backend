@@ -6,4 +6,5 @@ export interface SuggestionRepository {
 	update(id: number, data: UpdateSuggestionDto) : Promise<SuggestionEntity>;
 	delete(id: number) : Promise<void>;
 	getByControlId(controlId: number) : Promise<SuggestionEntity | null>;
+	getAll() : Promise<SuggestionEntity[]>;
 }

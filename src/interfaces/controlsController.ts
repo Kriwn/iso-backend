@@ -6,6 +6,7 @@ import { ControlCodeAlreadyExistsError, ControlCodeIdMismatchError, ControlNotFo
 import { control_status } from "../../generated/prisma/client";
 import { AssessmentControlNotFoundError } from "../errors/assessmentControlError";
 import { ControlTypeMismatchError, InvalidControlCodeError } from "../services/controls/iso27001-controls.validator";
+import { LLMServiceError } from "../services";
 
 const ControlStatusEnum = {
 	NOT_IMPLEMENTED: control_status.NOT_IMPLEMENTED,
@@ -140,6 +141,10 @@ export const controlsController = (controlsService: ControlsService) =>
 					if (err instanceof AssessmentControlNotFoundError) {
 						set.status = 404;
 						return { message: err.message };
+					}
+					if (error instanceof LLMServiceError) {
+						set.status = 502;
+						return { message: error.message };
 					}
 					set.status = 500;
 					return { message: "Internal Server Error" };

@@ -32,6 +32,16 @@ export const suggestionController = (suggestionService: SuggestionService) =>
 			}
 		)
 		.get(
+			"/",
+			async ({ set }) => {
+					const suggestions = await suggestionService.getAllSuggestions();
+					return suggestions;
+			},
+			{
+				detail: { summary: "Get all suggestions" },
+			}
+		)
+		.get(
 			"/control/:controlId",
 			async ({ params, set }) => {
 				try {

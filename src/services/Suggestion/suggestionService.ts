@@ -19,4 +19,8 @@ export class SuggestionService {
 	async getSuggestionByControlId(controlId: number) {
 		return this.suggestionRepository.getByControlId(controlId);
 	}
+
+	async getAllSuggestions() {
+		return this.suggestionRepository.getAll();
+	}
 }

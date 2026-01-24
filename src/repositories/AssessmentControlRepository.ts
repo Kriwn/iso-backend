@@ -1,4 +1,4 @@
-import { AssessmentControlEntity } from "../entities/AssessmentControlEntity";
+import { AssessmentControlEntity } from "../entities/assessmentControlEntity";
 import { CreateAssessmentControlDto, UpdateAssessmentControlDto } from "../services/assessmentControl/assessmentControlDto";
 
 export interface AssessmentControlRepository {

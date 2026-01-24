@@ -21,12 +21,12 @@ import { evidenceController } from "./interfaces/evidenceController";
 import { PrismaEvidenceRepository } from "./infrastructures/db/prisma/repositories/prismaEvidenceRepository";
 import { PrismaSuggestionRepository } from "./infrastructures/db/prisma/repositories/prismaSuggestionRepository";
 import { suggestionController } from "./interfaces/suggestionController";
-import { assessmentControlController } from "./interfaces/AssessmentControlController";
 import { ControlsService } from "./services/controls/controlsService";
 import { EvidenceService } from "./services/evidence/evidenceService";
 import { SuggestionService } from "./services/suggestion/suggestionService";
 import { AssessmentControlService } from "./services/assessmentControl/assessmentControlService";
 import { LlmService } from "./services/llm/llmService";
+import { assessmentControlController } from "./interfaces/assessmentControlController";
 
 const app = new Elysia({
   // normalize: false,

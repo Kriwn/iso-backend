@@ -4,11 +4,11 @@ import { SuggestionRepository } from "../../../../repositories/suggestionReposit
 import { CreateSuggestionDto, UpdateSuggestionDto } from "../../../../services/suggestion/suggestionDto";
 
 export class PrismaSuggestionRepository implements SuggestionRepository {
-	constructor(private readonly prisma: PrismaClient) {}
+	constructor(private readonly prisma: PrismaClient) { }
 
 	async create(data: CreateSuggestionDto): Promise<SuggestionEntity> {
 		try {
-			const suggestion = await this.prisma.suggestion.create({data});
+			const suggestion = await this.prisma.suggestion.create({ data });
 			return toSuggestionEntity(suggestion);
 		}
 		catch (error) {
@@ -30,15 +30,16 @@ export class PrismaSuggestionRepository implements SuggestionRepository {
 	}
 
 	async getByControlId(controlId: number): Promise<SuggestionEntity | null> {
-		try {
-			const suggestion = await this.prisma.suggestion.findFirst({
-				where: { controlId },
-			});
-			return suggestion ? toSuggestionEntity(suggestion) : null;
-		}
-		catch (error) {
-			throw new Error("Error retrieving suggestion: " + error);
-		}
+		const suggestion = await this.prisma.suggestion.findFirst({
+			where: { controlId },
+		});
+		return suggestion ? toSuggestionEntity(suggestion) : null;
+	}
+
+	async getAll(): Promise<SuggestionEntity[]> {
+		const suggestions = await this.prisma.suggestion.findMany();
+		return suggestions.map(toSuggestionEntity);
+
 	}
 
 	async delete(id: number): Promise<void> {
