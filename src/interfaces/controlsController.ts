@@ -142,9 +142,9 @@ export const controlsController = (controlsService: ControlsService) =>
 						set.status = 404;
 						return { message: err.message };
 					}
-					if (error instanceof LLMServiceError) {
+					if (err instanceof LLMServiceError) {
 						set.status = 502;
-						return { message: error.message };
+						return { message: err.message };
 					}
 					set.status = 500;
 					return { message: "Internal Server Error" };
