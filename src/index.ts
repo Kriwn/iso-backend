@@ -1,32 +1,15 @@
 import cors from "@elysiajs/cors";
-import { Elysia, t } from "elysia";
-import { initLogger, logger } from "./config/logger";
-import { loadEnv } from "./config/env";
-import { getPrismaClient } from "./infrastructures/db/prisma/client";
-import { getAuth } from "./utils/auth";
-import { PrismaUserRepository } from "./infrastructures/db/prisma/repositories/prismaUserRepository";
-import { UserService } from "./services/user/userService";
 import swagger from "@elysiajs/swagger";
-import { userController } from "./interfaces/userController";
-import { PrismaCompanyRepository } from "./infrastructures/db/prisma/repositories/prismaCompanyRepository";
+import { Elysia, t } from "elysia";
+import { loadEnv, initLogger, logger } from "./config";
+import { getPrismaClient, PrismaUserRepository, PrismaCompanyRepository, PrismaAssessmentControlRepository, PrismaIsoAssessmentRepository, PrismaEvidenceRepository, PrismaSuggestionRepository, PrismaControlsRepository } from "./infrastructures";
+import { userController, companyController, isoAssessmentController, assessmentControlController, controlsController, evidenceController, suggestionController } from "./interfaces";
+import { AssessmentControlService, LlmService, EvidenceService, SuggestionService, ControlsService } from "./services";
 import { CompanyService } from "./services/company/companyService";
-import { companyController } from "./interfaces/companyController";
-import { PrismaIsoAssessmentRepository } from "./infrastructures/db/prisma/repositories/prismaIsoAssessmentRepository";
 import { IsoAssessmentService } from "./services/isoAssessment/isoAssessmentService";
-import { isoAssessmentController } from "./interfaces/isoAssessmentController";
-import { PrismaAssessmentControlRepository } from "./infrastructures/db/prisma/repositories/prismaAssessmentControlRepository";
-import { PrismaControlsRepository } from "./infrastructures/db/prisma/repositories/prismaControlsRepository";
-import { controlsController } from "./interfaces/controlsController";
-import { evidenceController } from "./interfaces/evidenceController";
-import { PrismaEvidenceRepository } from "./infrastructures/db/prisma/repositories/prismaEvidenceRepository";
-import { PrismaSuggestionRepository } from "./infrastructures/db/prisma/repositories/prismaSuggestionRepository";
-import { suggestionController } from "./interfaces/suggestionController";
-import { ControlsService } from "./services/controls/controlsService";
-import { EvidenceService } from "./services/evidence/evidenceService";
-import { SuggestionService } from "./services/suggestion/suggestionService";
-import { AssessmentControlService } from "./services/assessmentControl/assessmentControlService";
-import { LlmService } from "./services/llm/llmService";
-import { assessmentControlController } from "./interfaces/assessmentControlController";
+import { UserService } from "./services/user/userService";
+import { getAuth } from "./utils/auth";
+
 
 const app = new Elysia({
   // normalize: false,
