@@ -37,7 +37,9 @@ export const EnvSchema = {
 		error: "BETTER_AUTH_URL is required",
 	}),
 
-	BETTER_AUTH_CORS: t.Optional(t.String()),
+	BETTER_AUTH_CORS: t.String({
+		error: "BETTER_AUTH_CORS is required",
+	}),
 
 
 	// GOOGLE_CLIENT_ID: t.String({
@@ -79,7 +81,7 @@ export type Env = {
 	POST_LLM_PATH: string;
 	// BETTER_AUTH_SECRET: string;
 	BETTER_AUTH_URL: string;
-	BETTER_AUTH_CORS?: string;
+	BETTER_AUTH_CORS: string;
 	// GOOGLE_CLIENT_ID: string;
 	// GOOGLE_CLIENT_SECRET: string;
 	// LINE_CLIENT_ID: string;
