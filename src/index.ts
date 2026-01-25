@@ -56,7 +56,38 @@ app.all("/api/auth/*", async ({ request }) => {
   return auth.handler(request);
 });
 
-app.use(swagger({ path: "/docs" }))
+// Swagger protection with Basic Auth
+const swaggerAuth = (username?: string, password?: string) => {
+  return new Elysia()
+    .onBeforeHandle(({ request, set }) => {
+      const url = new URL(request.url);
+      // Protect /docs and /docs/json endpoints
+      if (url.pathname.startsWith('/docs')) {
+        // Skip protection if no credentials configured
+        if (!username || !password) return;
+
+        const authHeader = request.headers.get('authorization');
+        if (!authHeader || !authHeader.startsWith('Basic ')) {
+          set.status = 401;
+          set.headers['WWW-Authenticate'] = 'Basic realm="Swagger Documentation"';
+          return 'Unauthorized';
+        }
+
+        const base64Credentials = authHeader.slice(6);
+        const credentials = atob(base64Credentials);
+        const [user, pass] = credentials.split(':');
+
+        if (user !== username || pass !== password) {
+          set.status = 401;
+          set.headers['WWW-Authenticate'] = 'Basic realm="Swagger Documentation"';
+          return 'Unauthorized';
+        }
+      }
+    });
+};
+
+app.use(swaggerAuth(env.SWAGGER_USERNAME, env.SWAGGER_PASSWORD))
+  .use(swagger({ path: "/docs" }))
   .use(userController(userService))
   .use(companyController(companyService))
   .use(isoAssessmentController(isoAssessmentService))

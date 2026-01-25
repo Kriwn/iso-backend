@@ -7,10 +7,13 @@ export const EnvSchema = {
 		error: "NODE_ENV is required",
 	}),
 
-
 	DATABASE_URL: t.String({
 		error: "DATABASE_URL is required",
 	}),
+
+	// ---------------------- SWAGGER PROTECTION -------------------------------//
+	SWAGGER_USERNAME: t.Optional(t.String()),
+	SWAGGER_PASSWORD: t.Optional(t.String()),
 
 	// ---------------------- APP -------------------------------//
 	APP_PORT: t.String({
@@ -72,6 +75,9 @@ export type Env = {
 	NODE_ENV: string;
 	DATABASE_URL: string;
 
+	// ---------------------- SWAGGER PROTECTION -------------------------------//
+	SWAGGER_USERNAME?: string;
+	SWAGGER_PASSWORD?: string;
 
 	// ---------------------- APP -------------------------------//
 
