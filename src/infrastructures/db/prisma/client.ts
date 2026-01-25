@@ -2,14 +2,15 @@ import { logger } from "../../../config/logger";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../../../generated/prisma/client";
+import { Env } from "../../../config";
 
 let prisma: PrismaClient | null = null;
 
-export function getPrismaClient() {
+export function getPrismaClient(env: Env) {
   if (prisma) return prisma;
 
   const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: env.DATABASE_URL,
   });
 
   const adapter = new PrismaPg(pool);

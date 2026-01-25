@@ -1,7 +1,8 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { Env } from "../config";
 
-export function getAuth(prisma: any) {
+export function getAuth(prisma: any, env: Env) {
     return betterAuth({
         database: prismaAdapter(prisma, {
             provider: "postgresql",
@@ -9,7 +10,7 @@ export function getAuth(prisma: any) {
         emailAndPassword: {
             enabled: true,
         },
-        trustedOrigins: process.env.BETTER_AUTH_CORS ? process.env.BETTER_AUTH_CORS.split(",") : [],
+        trustedOrigins: env.BETTER_AUTH_CORS ? env.BETTER_AUTH_CORS.split(",") : [],
         advanced: {
           crossSubDomainCookies: {
             enabled: true,

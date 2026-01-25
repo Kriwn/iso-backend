@@ -19,7 +19,7 @@ const app = new Elysia({
 const env = loadEnv(app);
 initLogger(env.NODE_ENV);
 logger.info("Init Env");
-const prisma = getPrismaClient();
+const prisma = getPrismaClient(env);
 
 // Cors
 app.use(
@@ -32,7 +32,7 @@ app.use(
   })
 )
 
-const auth = getAuth(prisma);
+const auth = getAuth(prisma, env);
 
 const userRepo = new PrismaUserRepository(prisma);
 const userService = new UserService(userRepo, prisma);
