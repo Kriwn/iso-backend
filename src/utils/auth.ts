@@ -10,6 +10,16 @@ export function getAuth(prisma: any) {
             enabled: true,
         },
         trustedOrigins: process.env.BETTER_AUTH_CORS ? process.env.BETTER_AUTH_CORS.split(",") : [],
+        advanced: {
+          crossSubDomainCookies: {
+            enabled: true,
+          },
+          defaultCookieAttributes: {
+            sameSite: "none",
+            secure: true,
+            httpOnly: true,
+          },
+        },
         user: {
             modelName: "user",
             fields: {

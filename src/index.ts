@@ -12,15 +12,25 @@ import { getAuth } from "./utils/auth";
 
 
 const app = new Elysia({
+  // normalize: false,
   aot: true,
 });
-
 
 const env = loadEnv(app);
 initLogger(env.NODE_ENV);
 logger.info("Init Env");
 const prisma = getPrismaClient();
 
+// Cors
+app.use(
+  cors({
+    origin: true, // If set to true, Access-Control-Allow-Origin will be set to * (any origins)
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    maxAge: 5, //defualt value
+  })
+)
 
 const auth = getAuth(prisma);
 
@@ -55,17 +65,7 @@ app.use(swagger({ path: "/docs" }))
   .use(evidenceController(evidenceService))
   .use(suggestionController(suggestionService));
 
-
-// Cors
-app.use(
-  cors({
-    origin: true, // If set to true, Access-Control-Allow-Origin will be set to * (any origins)
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    maxAge: 5, //defualt value
-  })
-)
+app
   .get("/", () => "Hello Elysia")
   .listen(env.APP_PORT);
 
