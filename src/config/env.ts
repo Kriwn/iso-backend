@@ -33,9 +33,9 @@ export const EnvSchema = {
 	// 	error: "BETTER_AUTH_SECRET is required",
 	// }),
 
-	// BETTER_AUTH_URL: t.String({
-	// 	error: "BETTER_AUTH_URL is required",
-	// }),
+	BETTER_AUTH_URL: t.String({
+		error: "BETTER_AUTH_URL is required",
+	}),
 
 
 	// GOOGLE_CLIENT_ID: t.String({
@@ -76,7 +76,7 @@ export type Env = {
 	// LLM_BASE_URL: string;
 	POST_LLM_PATH: string;
 	// BETTER_AUTH_SECRET: string;
-	// BETTER_AUTH_URL: string;
+	BETTER_AUTH_URL: string;
 	// GOOGLE_CLIENT_ID: string;
 	// GOOGLE_CLIENT_SECRET: string;
 	// LINE_CLIENT_ID: string;
