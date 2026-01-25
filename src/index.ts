@@ -35,7 +35,7 @@ app.use(
 const auth = getAuth(prisma, env);
 
 const userRepo = new PrismaUserRepository(prisma);
-const userService = new UserService(userRepo, prisma);
+const userService = new UserService(userRepo, prisma, env);
 const companyRepo = new PrismaCompanyRepository(prisma);
 const companyService = new CompanyService(companyRepo);
 const assessmentControlRepo = new PrismaAssessmentControlRepository(prisma);

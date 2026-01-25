@@ -1,4 +1,5 @@
- import { getPrismaClient } from "../../infrastructures/db/prisma/client";
+ import { PrismaClient } from "../../../generated/prisma/client";
+import { Env } from "../../config";
 import { UserRepository } from "../../repositories/userRepository";
 import { getAuth } from "../../utils/auth";
 import { CreateUserDto, UpdateUserDto } from "./userDto"
@@ -9,10 +10,11 @@ export class UserService {
 
 	constructor(
 		private userRepository: UserRepository,
-		prisma = getPrismaClient()
+		prisma: PrismaClient,
+		env: Env
 	) {
 		this.prisma = prisma;
-		this.auth = getAuth(this.prisma);
+		this.auth = getAuth(this.prisma, env);
 	}
 
 	async registerUser(data: CreateUserDto) {
