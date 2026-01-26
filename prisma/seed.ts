@@ -1,10 +1,23 @@
 // prisma/seed.ts
+import { Pool } from "pg";
 import { control_status, controls_type, iso_status, PrismaClient, userRole } from "../generated/prisma/client";
+import { initLogger, loadEnv } from "../src/config";
 import { getPrismaClient } from "../src/infrastructures/db/prisma/client";
 import { ISO27001_CONTROLS_CATALOG } from "../src/services/controls/iso27001-controls.catalog";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 
-const prisma = getPrismaClient();
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+const adapter = new PrismaPg(pool);
+
+const prisma = new PrismaClient({
+  adapter,
+  log: ["error", "info", "warn"],
+});
+
 function assessmentControlDescription(type: controls_type) {
   switch (type) {
     case controls_type.ORGANIZATION:
