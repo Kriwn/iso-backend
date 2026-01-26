@@ -63,7 +63,7 @@ export const controlsController = (controlsService: ControlsService) =>
 				detail: {summary : "Create controls" },
 				body: t.Object({
 					code: t.String(),
-					currentPractice: t.String(),
+					currentPractice: t.Optional(t.String()),
 					userContext: t.Optional(t.String()),
 					evidenceDescription: t.Optional(t.String()),
 					assessmentControlId: t.Number(),
@@ -91,6 +91,23 @@ export const controlsController = (controlsService: ControlsService) =>
 				detail: { summary: "Get control by ID" },
 				params: t.Object({
 					id: t.Number(),
+				}),
+			}
+		)
+		.get(
+			"/getAllByAssessmentControlId/:assessmentControlId",
+			async ({ params, set }) => {
+				try {
+					return await controlsService.getAllControlsByAssessmentControlId(params.assessmentControlId);
+				} catch (err) {
+					set.status = 500;
+					return { message: "Internal Server Error" };
+				}
+			},
+			{
+				detail: { summary: "Get all controls by assessmentControlId" },
+				params: t.Object({
+					assessmentControlId: t.Number(),
 				}),
 			}
 		)

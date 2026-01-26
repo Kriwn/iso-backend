@@ -3,13 +3,13 @@ import { control_status } from "../../../generated/prisma/enums";
 export interface CreateControlDto {
 	code: string;
 	name: string;
-	currentPractice: string;
 	description: string;
-	userContext?: string;
-	evidenceDescription?: string;
 	guidance: string;
 	assessmentControlId: number;
-	status:	 control_status;
+	status?:	 control_status;
+	currentPractice?: string;
+	userContext?: string;
+	evidenceDescription?: string;
 }
 
 export interface UpdateControlDto {

@@ -16,6 +16,10 @@ export class AssessmentControlService {
 		return this.assessmentControlRepository.getAll();
 	}
 
+	async getAllAssessmentControlsByIsoAssessmentId(isoAssessmentId: number) {
+		return this.assessmentControlRepository.getAllByIsoAssessmentId(isoAssessmentId);
+	}
+
 	async updateAssessmentControl(id: number, data: UpdateAssessmentControlDto) {
 		return this.assessmentControlRepository.update(id, data);
 	}

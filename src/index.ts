@@ -40,8 +40,6 @@ const companyRepo = new PrismaCompanyRepository(prisma);
 const companyService = new CompanyService(companyRepo);
 const assessmentControlRepo = new PrismaAssessmentControlRepository(prisma);
 const assessmentControlService = new AssessmentControlService(assessmentControlRepo);
-const isoAssessmentRepo = new PrismaIsoAssessmentRepository(prisma);
-const isoAssessmentService = new IsoAssessmentService(prisma,isoAssessmentRepo,assessmentControlRepo);
 const llmService = new LlmService(env);
 const evidenceRepo = new PrismaEvidenceRepository(prisma);
 const evidenceService = new EvidenceService(evidenceRepo);
@@ -49,6 +47,8 @@ const suggestionRepo = new PrismaSuggestionRepository(prisma);
 const suggestionService = new SuggestionService(suggestionRepo);
 const controlRepo = new PrismaControlsRepository(prisma);
 const controlService = new ControlsService(assessmentControlRepo, controlRepo,suggestionRepo,llmService);
+const isoAssessmentRepo = new PrismaIsoAssessmentRepository(prisma);
+const isoAssessmentService = new IsoAssessmentService(prisma,isoAssessmentRepo,assessmentControlRepo,controlRepo);
 
 
 // Better Auth route handler

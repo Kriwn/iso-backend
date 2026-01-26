@@ -74,6 +74,21 @@ export const assessmentControlController= (assessmentControlService: AssessmentC
 			}
 		)
 		.get(
+			"/getAllByIsoAssessmentId/:isoAssessmentId",
+			async ({ params, set }) => {
+				try {
+					return await assessmentControlService.getAllAssessmentControlsByIsoAssessmentId(params.isoAssessmentId);
+				} catch (err) {
+					set.status = 500;
+					return { message: "Internal Server Error" };
+				}
+			},
+			{
+				detail: { summary: "Get all assessment controls by ISOAssessment id" },
+				params: t.Object({ isoAssessmentId: t.Number() }),
+			}
+		)
+		.get(
 			"/:id",
 			async ({ params, set }) => {
 				try {

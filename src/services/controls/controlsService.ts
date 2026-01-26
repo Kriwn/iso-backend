@@ -85,6 +85,10 @@ export class ControlsService {
 		return this.controlsRepository.getById(id);
 	}
 
+	async getAllControlsByAssessmentControlId(assessmentControlId: number) {
+		return this.controlsRepository.getAllByAssessmentControlId(assessmentControlId);
+	}
+
 	async getAllControls() {
 		return this.controlsRepository.getAll();
 	}

@@ -1,9 +1,12 @@
-import { PrismaClient } from "../../../generated/prisma/client";
+import { controls_type, PrismaClient } from "../../../generated/prisma/client";
 import { IsoAssessmentNotFoundError } from "../../errors/isoAssessmentError";
 import { AssessmentControlRepository } from "../../repositories/assessmentControlRepository";
+import { ControlsRepository } from "../../repositories/controlsRepository";
 import { IsoAssessmentRepository } from "../../repositories/isoAssessmentRepository";
 import { CreateAssessmentControlDto, createAssessmentControlDto } from "../assessmentControl/assessmentControlDto";
 import { CreateIsoAssessmentDto } from "./isoAssessmentDto";
+import { CreateControlDto } from "../controls/controlsDto";
+import { ISO27001_CONTROLS_CATALOG } from "../controls/iso27001-controls.catalog";
 
 const CONTROL_COUNTS = {
 	ORGANISATIONAL: 37,
@@ -15,7 +18,8 @@ const CONTROL_COUNTS = {
 export class IsoAssessmentService {
 	constructor(private prisma: PrismaClient,
 		private isoAssessmentRepository: IsoAssessmentRepository,
-		private assessmentControlRepository: AssessmentControlRepository
+		private assessmentControlRepository: AssessmentControlRepository,
+		private controlsRepository: ControlsRepository
 	) { }
 
 	async createIso(data: CreateIsoAssessmentDto) {
@@ -47,7 +51,21 @@ export class IsoAssessmentService {
 						isoAssessment.id
 					),
 				];
-				await this.assessmentControlRepository.createManyWithTx(tx, dtos);
+				const createdAssessmentControls = await this.assessmentControlRepository.createManyWithTx(tx, dtos);
+				const acIdByType = new Map<controls_type, number>();
+				for (const ac of createdAssessmentControls) {
+					acIdByType.set(ac.type, ac.id);
+				}
+				const controlDtos: CreateControlDto[] = ISO27001_CONTROLS_CATALOG.map((c) => ({
+					code: c.code,
+					name: c.name,
+					description: c.description,
+					guidance: c.guidance,
+					assessmentControlId: acIdByType.get(c.type)!,
+				}));
+
+				await this.controlsRepository.createManyWithTx(tx, controlDtos);
+
 				return isoAssessment;
 			});
 		}
@@ -58,8 +76,7 @@ export class IsoAssessmentService {
 
 	async summarizeIsoControls(id: number) {
 		const res = await this.isoAssessmentRepository.getById(id);
-		if (!res)
-		{
+		if (!res) {
 			throw new IsoAssessmentNotFoundError(id);
 		}
 		const data = await this.isoAssessmentRepository.summary(id);

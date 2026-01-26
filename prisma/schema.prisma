@@ -39,11 +39,11 @@ model Controls {
   id                  Int               @id @default(autoincrement()) @db.Integer
   code                String            @db.VarChar(20)
   name                String            @db.VarChar(255)
-  currentPractice     String            @db.Text
+  currentPractice     String            @db.Text  @default("")
   description         String            @db.Text
   guidance            String            @db.Text
-  userContext          String?            @db.Text
-  evidenceDescription   String?            @db.Text
+  userContext          String            @db.Text @default("")
+  evidenceDescription   String            @db.Text @default("")
   status              control_status    @default(NOT_IMPLEMENTED)
   assessmentControlId Int               @db.Integer
   assessmentControl   AssessmentControl @relation(fields: [assessmentControlId], references: [id], onDelete: Cascade)

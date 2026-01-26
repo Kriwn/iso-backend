@@ -4,20 +4,35 @@ import { ControlCodeAlreadyExistsError, ControlCodeIdMismatchError, ControlNotFo
 import { ControlsRepository } from "../../../../repositories/controlsRepository";
 import { CreateControlDto } from "../../../../services/controls/controlsDto";
 
-export class PrismaControlsRepository  implements ControlsRepository {
-	constructor(private prisma: PrismaClient) {}
+export class PrismaControlsRepository implements ControlsRepository {
+	constructor(private prisma: PrismaClient) { }
 
 	async create(data: CreateControlDto): Promise<ControlEntity> {
 		try {
-			const  res = await this.prisma.controls.create({ data });
+			const res = await this.prisma.controls.create({ data });
 			return toControlEntity(res);
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')
-			{
+			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
 				throw new ControlCodeAlreadyExistsError(data.code, data.assessmentControlId);
 			}
 			throw error;
 		}
+	}
+
+	async createManyWithTx(tx: any, data: CreateControlDto[]): Promise<ControlEntity[]> {
+		let items: ControlEntity[] = [];
+		for (const dto of data) {
+			try {
+				const res = await tx.controls.create({ data: dto });
+				items.push(toControlEntity(res));
+			} catch (error) {
+				if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+					throw new ControlCodeAlreadyExistsError(dto.code, dto.assessmentControlId);
+				}
+				throw error;
+			}
+		}
+		return items;
 	}
 
 	async getById(id: number): Promise<ControlEntity | null> {
@@ -30,14 +45,11 @@ export class PrismaControlsRepository  implements ControlsRepository {
 		return toControlEntity(res);
 	}
 
-	async getByCodeIso(code: string, assessmentControlId: number): Promise<ControlEntity | null> {
-		const res = await this.prisma.controls.findFirst({
-			where: { code, assessmentControlId },
+	async getAllByAssessmentControlId(assessmentControlId: number): Promise<ControlEntity[]> {
+		const res = await this.prisma.controls.findMany({
+			where: { assessmentControlId },
 		});
-		if (!res) {
-			throw new ControlCodeIdMismatchError(code, assessmentControlId);
-		}
-		return toControlEntity(res);
+		return res.map(toControlEntity);
 	}
 
 	async getAll(): Promise<ControlEntity[]> {
@@ -65,7 +77,7 @@ export class PrismaControlsRepository  implements ControlsRepository {
 			await this.prisma.controls.delete({
 				where: { id },
 			});
-			return ;
+			return;
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
 				throw new ControlNotFoundError(id);

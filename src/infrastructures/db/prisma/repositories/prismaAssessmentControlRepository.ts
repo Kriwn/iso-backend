@@ -35,6 +35,13 @@ export class PrismaAssessmentControlRepository implements AssessmentControlRepos
 		return toAssessmentControlEntity(res);
 	}
 
+	async getAllByIsoAssessmentId(isoAssessmentId: number): Promise<AssessmentControlEntity[]> {
+		const res = await this.prisma.assessmentControl.findMany({
+			where: { isoAssessmentId },
+		});
+		return res.map(toAssessmentControlEntity);
+	}
+
 	async getAll(): Promise<AssessmentControlEntity[]> {
 		const res = await this.prisma.assessmentControl.findMany();
 		return res.map(toAssessmentControlEntity);

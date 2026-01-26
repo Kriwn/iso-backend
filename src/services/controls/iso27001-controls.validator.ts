@@ -15,6 +15,13 @@ export class ControlTypeMismatchError extends Error {
 	}
 }
 
+export class ControlPrefixMismatchError extends Error {
+  constructor(public code: string, public expectedPrefix: string) {
+    super(`Control ${code} prefix mismatch. expectedPrefix=${expectedPrefix}`);
+    this.name = "ControlPrefixMismatchError";
+  }
+}
+
 const PREFIX_BY_TYPE: Record<controls_type, string> = {
 	ORGANIZATION: "A.5.",
 	PEOPLE: "A.6.",
@@ -39,24 +46,26 @@ export function normalizeControlCode(input: string, expectedPrefix: string) {
 
 
 export function validateControlCodeForType(input: {
-	code: string;
-	assessmentType: controls_type;
+  code: string;
+  assessmentType: controls_type;
 }) {
-	const { code, assessmentType } = input;
+  const { code, assessmentType } = input;
 
-	const expectedPrefix = PREFIX_BY_TYPE[assessmentType];
-	if (!code.startsWith(expectedPrefix)) {
-		throw new ControlTypeMismatchError(code, assessmentType, assessmentType);
-	}
+  const expectedPrefix = PREFIX_BY_TYPE[assessmentType];
+  const normalized = normalizeControlCode(code, expectedPrefix);
 
-	const catalogItem = ISO27001_CONTROL_BY_CODE.get(code);
-	if (!catalogItem) {
-		throw new InvalidControlCodeError(code);
-	}
+  if (!normalized.startsWith(expectedPrefix)) {
+    throw new ControlPrefixMismatchError(normalized, expectedPrefix);
+  }
 
-	if (catalogItem.type !== assessmentType) {
-		throw new ControlTypeMismatchError(code, assessmentType, catalogItem.type);
-	}
+  const catalogItem = ISO27001_CONTROL_BY_CODE.get(normalized);
+  if (!catalogItem) {
+    throw new InvalidControlCodeError(normalized);
+  }
 
-	return catalogItem;
+  if (catalogItem.type !== assessmentType) {
+    throw new ControlTypeMismatchError(normalized, assessmentType, catalogItem.type);
+  }
+
+  return catalogItem;
 }
