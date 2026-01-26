@@ -77,10 +77,6 @@ export class ControlsService {
 		return suggest;
 	}
 
-	async getControlByCodeIso(code: string, assessmentControlId: number) {
-		return this.controlsRepository.getByCodeIso(code, assessmentControlId);
-	}
-
 	async getControlById(id: number) {
 		return this.controlsRepository.getById(id);
 	}

@@ -126,30 +126,6 @@ export const controlsController = (controlsService: ControlsService) =>
 			}
 		)
 		.put(
-			"/",
-			async ({ body, set }) => {
-				try {
-					return await controlsService.getControlByCodeIso(body.code, body.assessmentControlId);
-				} catch (err) {
-					if (err instanceof ControlCodeIdMismatchError) {
-						set.status = 404;
-						return { message: err.message };
-					}
-					set.status = 500;
-					return { message: "Internal Server Error" };
-				}
-			},
-			{
-				detail: { summary: "Get control by code and assessmentControlId" },
-				body: t.Object({
-					code: t.String(),
-					assessmentControlId: t.Number(),
-				},
-					{ additionalProperties: false }
-				)
-			}
-		)
-		.put(
 			"/suggest/:id",
 			async ({ params, set }) => {
 				try {
