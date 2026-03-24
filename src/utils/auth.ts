@@ -1,9 +1,11 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { Env } from "../config";
+import { bearer } from "better-auth/plugins";
 
 export function getAuth(prisma: any, env: Env) {
     return betterAuth({
+        plugins: [bearer()],
         database: prismaAdapter(prisma, {
             provider: "postgresql",
         }),
